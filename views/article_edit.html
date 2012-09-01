@@ -1,0 +1,64 @@
+<% if(locals.error){ %>
+<h2><%= error%></h2>
+<% }else{ %>
+<h2>修改信息</h2>
+<% if(locals.action && locals.action == 'article_edit'){ %>
+<form id="create_article_form" action="/article_edit/<%= article_id%>" method="post">
+<% }else{ %>
+<form id="create_article_form" action="/article_create" method="post">
+<% } %>
+    <input type="hidden" name="_csrf" value="<%= _csrf%>" />
+    <% if(locals.tags && locals.tags.length>0){ %>
+    	<input type="hidden" name="tags_ids" id="tags_ids" value="" />
+    	<p>
+    		<% tags.forEach(function(tag){ %>
+    			<% if(tag.is_selected){%>
+    				<span tag_id="<%= tag._id%>" class="tag_box is_selected"><%= tag.name%></span>
+    			<% }else{ %>
+    				<span tag_id="<%= tag._id%>" class="tag_box"><%= tag.name%></span>
+    			<% } %>
+			<% })%>
+    	</p>
+    <% } %>
+    <% if(locals.article_id){ %>
+    <input type="hidden" name="article_id" value="<%= article_id%>" />
+	<% } %>
+	<% if(locals.title){ %>
+    <input type="text" name="title" value="<%= title%>" />
+    <% }else{ %>
+    <input type="text" name="title" value="" />
+    <% } %>
+    <textarea id="content" name="content" rows="15" cols="90"><% if(locals.content){ %><%= content%><% }else{ %><% } %></textarea>
+    <input type="submit" id="submit_btn" value="提交" />
+</form>
+<% } %>
+
+<script>
+   //装载编辑器
+  
+    var editor;
+    KindEditor.ready(function(K) {
+            editor = K.create('#content',{
+            	items : ['source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+						'code', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+						'insertunorderedlist', '|', 'emoticons', 'image', 'link', 'preview']
+            });
+    });
+    
+    $(function(){
+    	$('.tag_box').click(function(){
+    		$(this).toggleClass('is_selected');
+    	});
+    	
+    	$('#submit_btn').click(function(){
+    		var values=[];
+		    $('.tag_box').each(function(){
+				if($(this).hasClass('is_selected')){
+					values.push($(this).attr('tag_id'));
+				}
+			 });
+		    $('#tags_ids').val(values);
+		    $('#create_article_form').submit();
+    	});
+    });
+</script>

@@ -1,0 +1,16 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.tag_box{
+	border: 1px solid #00B7FF;
+	cursor: pointer;
+}
+.is_selected{
+	background: #00B7FF;
+}

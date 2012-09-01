@@ -1,0 +1,22 @@
+<% if(locals.articles && locals.articles.length>0){ %>
+<h2>信息列表</h2>
+<p>
+<% tags.forEach(function(tag){ %>
+	<a style="margin-right:20px;" href="<%= tag._id%>"><%= tag.name%></a>
+<% }) %>
+</p>
+<% articles.forEach(function(article){ %>
+<p>
+    <span style="margin-right:20px;"><%=article.title %></span>
+    <span style="margin-left:10px;"><%=article.author.user_name %></span>
+    <span style="margin-left:10px;"><%=article.create_at %></span>
+    <% if(article.edit){ %>
+    <span style="margin-left:10px;"><%= article.update_time%></span>
+    <span style="margin-left:10px;"><%= article.edit.user_name%></span>
+    <% } %>
+    <a style="margin-left:10px;" href="/article_view/<%= article._id%>">查看</a>
+    <a style="margin-left:10px;" href="/article_edit/<%= article._id%>">修改</a>
+    <a style="margin-left:10px;" href="/article_del/<%= article._id%>">删除</a>
+</p>
+<% }) %>
+<% } %>

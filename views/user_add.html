@@ -1,0 +1,19 @@
+<h2>添加用户</h2>
+<form action="/useradd" method="post">
+    <input type="hidden" name="_csrf" value="<%= _csrf%>" />
+    <% if (locals.user_name) { %>
+    <input type="text" name="username" value="<%= user_name%>" />
+    <% } else { %>
+    <input type="text" name="username" value="" />
+    <% } %>
+    <% if (locals.email) { %>
+    <input name="email" type="email" value="<%= email%>"/>
+    <% } else { %>
+    <input name="email" type="text" value=""/>
+    <% } %>
+    <input name="password" type="password" />
+    <input type="submit" value="提交" />
+</form>
+<%if(locals.error){%>
+<p><%= error %></p>
+<%}%>

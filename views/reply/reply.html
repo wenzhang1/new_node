@@ -1,0 +1,18 @@
+<div class="reply_inner_box">
+	<span class="reply_author">
+		<%= reply.author.user_name%>
+	</span>
+	<a href="javascript:void(0);" id="reply_btn">@回复</a>
+	<p class="reply_content">
+		<%- reply.reply_content%>
+	</p>
+	<span class="reply_time">
+		<%= reply.reply_time%>
+	</span>
+</div>
+<div class="reply_area" id="<%= reply._id%>">
+	<p>评论：</p>
+	<textarea class="reply_textarea" name="reply_content" style="width: 500px; height:150px;"></textarea>
+	<input type="submit" class="reply2_submit_btn" value="提交">
+</div>
+<hr />

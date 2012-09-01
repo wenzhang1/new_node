@@ -1,0 +1,25 @@
+<h2>用户列表</h2>
+<p>
+   <span style="margin-right:20px;">用户名</span>
+   <span style="margin-left:10px;">邮箱</span>
+   <span style="margin-left:10px;">创建时间</span>
+   <span style="margin-left:10px;">最后修改时间</span>
+   <span style="margin-left:10px;">修改人</span>
+</p>
+<% users.forEach(function(user){ %>
+<p>
+    <span style="margin-right:20px;"><%=user.user_name %></span>
+    <span style="margin-left:10px;"><%=user.email %></span>
+    <span style="margin-left:10px;"><%=user.create_at%></span>
+    <span style="margin-left:10px;"><%=user.update_time%></span>
+    <% if(user.edit){ %>
+         <span style="margin-left:10px;"><%=user.edit.user_name%></span>
+    <% }else{ %>
+         <span style="margin-left:10px;">无</span>
+    <% } %>
+    <a style="margin-left:10px;" href="/change_password/<%=user._id%>">修改密码</a>
+    <% if(locals.current_user._id != user._id && locals.current_user.is_admin){ %>
+         <a style="margin-left:10px;" href="/del_user/<%=user._id%>">删除用户</a>
+    <% } %>
+</p>
+<% }) %>

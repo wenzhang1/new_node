@@ -1,0 +1,10 @@
+<h2>登录</h2>
+<form action="/login" method="post">
+    <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+    <input type="text" name="user_name" value="" />
+    <input type="password" name="password" value="" />
+    <input type="submit" value="登录" />
+</form>
+<%if(locals.error){%>
+<p><%= error %></p>
+<%}%>

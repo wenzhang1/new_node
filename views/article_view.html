@@ -1,0 +1,56 @@
+<% if(locals.article){ %>
+	<h2><%= article.title%></h2>
+	<p>
+		<span>作者：<%= article.author.user_name%></span>
+		<span>创建于:<%= article.create_at%></span>
+		<span>最后修改时间：<%= article.update_time%></span>
+	</p>
+	<p>
+		<% if(locals.article.tags && locals.article.tags.length>0){ %>
+			<% article.tags.forEach(function(tag){ %>
+				<span><%= tag.name%></span>
+			<% }) %>
+		<% }else{ %>
+			<span>暂无标签</span>
+		<% } %>
+	</p>
+	<%- article.content%>
+	<div class="reply_box">
+	<h4>文章评论</h4>
+	<%- partial('reply/reply', article.replies)%>
+	</div>
+	<p>发表评论：</p>
+	<form action="/<%=article._id %>/reply" method="post">
+		<input type="hidden" name="_csrf" value="<%= _csrf%>" />
+		<textarea class="reply_textarea" name="reply_content" style="width: 500px; height:150px;"></textarea>
+		<input type="submit" value="提交">
+	</form>
+<% } %>
+<script>
+   //装载编辑器
+  
+    var editor;
+    KindEditor.ready(function(K) {
+            editor = K.create('.reply_textarea',{
+            	items : ['source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+						'code', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+						'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+            });
+    });
+    
+    $('.reply2_submit_btn').click(function(){
+    	var reply_id = $(this).parent().attr('id');
+    	var reply2_content = $(this).parent().find('textarea').val();
+    	var data = {
+    		reply_id: reply_id,
+    		r2_content: reply2_content,
+    		_csrf: '<%- _csrf %>'
+    	};
+    	$.post('/<%=article._id %>/reply_2', data, function(data){
+    		if(data != ''){
+	    		$(this).parent().before(data);
+	    		$(this).parent().find('textarea').val('');
+    		}
+    	});
+    });
+</script>

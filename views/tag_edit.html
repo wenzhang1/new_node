@@ -1,0 +1,27 @@
+<% if(locals.error){ %>
+	<h2><%= error%></h2>
+<% }else{ %>
+	<% if(locals.action && locals.action == 'tag_edit'){ %>
+		<form action="/tag_edit/<%= tag_id%>" method="post">
+	<% }else{ %>
+		<form action="/tag_create" method="post">
+	<%}%>
+		<input type="hidden" name="_csrf" value="<%=_csrf%>" />
+		<% if(locals.name){ %>
+			<input type="text" name="name" value="<%= name%>" />
+		<% }else{ %>
+			<input type="text" name="name" value="" />
+		<% } %>
+		<% if(locals.order){ %>
+			<input type="text" name="order" value="<%= order%>" />
+		<% }else{ %>
+			<input type="text" name="order" value="" />
+		<% } %>
+		<textarea id="description" name="description" cols="30" rows="10"><% if(locals.description){ %><%= description%><% } %></textarea>
+		<% if(locals.action && locals.action == 'tag_edit'){ %>
+			<input type="submit" value="修改" />
+		<% }else{ %>
+			<input type="submit" value="添加" />
+		<%}%>
+	</form>
+<% } %>

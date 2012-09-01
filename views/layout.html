@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= config.webname %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/libs/editor/kindeditor-min.js"></script>
+    <script src="/javascripts/jquery.js"></script>
+    <script src="/javascripts/libs/sh/sh.js"></script>
+    <script src="/javascripts/jquery.js"></script>
+    <link rel="stylesheet" href="/javascripts/libs/sh/sh.css" />
+  </head>
+  <body>
+    <h1><%= config.webname %></h1>
+    <p>Welcome to <%= config.webname %></p>
+    <p>
+	<a href="/">首页</a>
+	<% if(locals.current_user){ %>
+   	<a href="/article_create">增加新信息</a>
+      <a href="/change_password/<%=current_user._id%>">修改密码</a>
+   	<% if(locals.current_user.is_admin){ %>
+      	<a href="/user_add">添加用户</a>
+      	<a href="/user_views">查看用户</a>
+   	<% } %>
+	<% } %>
+	<% if(!locals.current_user){ %>
+      <a href="/login">登录</a>
+	<% }else{ %>
+      <span><%= current_user.user_name %></span>
+	<% } %>
+	<a href="/login_out">注销</a>
+    </p>
+    <%- body %>
+  </body>
+</html>
