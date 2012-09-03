@@ -57,23 +57,17 @@ exports.reply_add = function(req, res, next){
 
 exports.reply2_add = function(req, res, next){
 	if(!req.session.user){
-		console.log(1);
-		res.send('对不起，请先登录');
 		return;
 	}
 	
 	var article_id = req.params.aid;
 	if(article_id.length != 24){
-		console.log(2);
-		res.send('对不起，没有此文章或已被删除');
 		return;
 	}
 	
 	var reply_id = req.body.reply_id;
-	var reply2_content = req.body.reply2_content;
+	var reply2_content = req.body.r2_content;
 	if(reply2_content == ''){
-		console.log(3);
-		res.send('对不起，回复内容不能为空');
 		return;
 	}
 	
@@ -141,10 +135,10 @@ function get_reply_by_query(where, cb){
 		var done = function(){
 			var replies2 = [];
 			
-			for(var i = replies.length-1; i <= 0; i++){
+			for(var i = replies.length-1; i >= 0; i--){
 				if(replies[i].reply_id){
 					replies2.push(replies[i]);
-					replies[i].splice(i, 1);
+					replies.splice(i, 1);
 				}
 			}
 			
@@ -159,7 +153,6 @@ function get_reply_by_query(where, cb){
 				}
 				replies[j].replies.reverse();
 			}
-		
 			return cb(err, replies);
 		}
 		var proxy = new EventProxy();

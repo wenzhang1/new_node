@@ -28,19 +28,31 @@
 <% } %>
 <script>
    //装载编辑器
-  
     var editor;
     KindEditor.ready(function(K) {
             editor = K.create('.reply_textarea',{
-            	items : ['source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
-						'code', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-						'insertunorderedlist', '|', 'emoticons', 'image', 'link']
-            });
+        	items : ['source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+					'code', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+					'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
+			afterCreate: function(){
+				this.sync();
+			},
+			afterChange: function(){
+				this.sync();
+			},
+			afterBlur: function(){
+				this.sync();
+			},
+        });
     });
     
     $('.reply2_submit_btn').click(function(){
-    	var reply_id = $(this).parent().attr('id');
-    	var reply2_content = $(this).parent().find('textarea').val();
+    	var $btn = $(this);
+    	var reply_id = $btn.parent().attr('id');
+    	var reply2_content = $btn.parent().find('.reply_textarea').val();
+    	if(reply2_content == ''){
+    		alert('对不起，回复内容不能为空！');
+    	}
     	var data = {
     		reply_id: reply_id,
     		r2_content: reply2_content,
@@ -48,9 +60,9 @@
     	};
     	$.post('/<%=article._id %>/reply_2', data, function(data){
     		if(data != ''){
-	    		$(this).parent().before(data);
-	    		$(this).parent().find('textarea').val('');
+	    		$btn.parent().before(data);
+	    		$btn.parent().find('.reply_textarea').val('');
     		}
-    	});
+    	}); 
     });
 </script>

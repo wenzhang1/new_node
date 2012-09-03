@@ -9,10 +9,14 @@
 	<span class="reply_time">
 		<%= reply.reply_time%>
 	</span>
+	<div class="reply2_box">
+		<% if(reply.replies.length > 0){ %>
+			<%-partial('reply/reply2',{collection: reply.replies, as: 'reply'}) %>
+		<% } %>
+		<div class="reply_area" id="<%= reply._id%>">
+			<p>评论：</p>
+			<textarea class="reply_textarea" name="reply_content" id="<%= reply._id%>" style="width: 500px; height:150px;"></textarea>
+			<input type="submit" class="reply2_submit_btn" value="提交">
+		</div>
+	</div>
 </div>
-<div class="reply_area" id="<%= reply._id%>">
-	<p>评论：</p>
-	<textarea class="reply_textarea" name="reply_content" style="width: 500px; height:150px;"></textarea>
-	<input type="submit" class="reply2_submit_btn" value="提交">
-</div>
-<hr />
