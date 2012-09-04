@@ -448,5 +448,13 @@ function get_articles_by_query(where, opt, cb){
 	});
 }
 
+function get_article_counts(where, cb){
+	Article.count(where, function(err, count){
+		if(err) return cb(err);
+		return cb(err, count);
+	});
+}
+
 exports.get_article_by_query_once = get_article_by_query_once;
 exports.get_articles_by_query = get_articles_by_query;
+exports.get_article_counts = get_article_counts;

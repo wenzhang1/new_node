@@ -19,4 +19,12 @@
     <a style="margin-left:10px;" href="/article_del/<%= article._id%>">删除</a>
 </p>
 <% }) %>
+<div class="pages_box">
+	<% var pages_url = base_url + '?' + 'page='; %>
+	<%- partial('page_layout', {
+		pages: pages,
+		pages_url: pages_url,
+		current_page: current_page
+	}) %>
+</div>
 <% } %>
