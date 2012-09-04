@@ -16,7 +16,7 @@ var Util = require('../libs/utils');
 
 exports.reply_add = function(req, res, next){
 	if(!req.session.user){
-		res.redirect('/login');
+		res.render('login', {error: '请登录后再发表评论'});
 		return;
 	}
 	
@@ -57,17 +57,20 @@ exports.reply_add = function(req, res, next){
 
 exports.reply2_add = function(req, res, next){
 	if(!req.session.user){
+		res.send('请登录后再发表评论');
 		return;
 	}
 	
 	var article_id = req.params.aid;
 	if(article_id.length != 24){
+		res.send('要评论的文章不存在或被删除');
 		return;
 	}
 	
 	var reply_id = req.body.reply_id;
 	var reply2_content = req.body.r2_content;
-	if(reply2_content == ''){
+	if(reply2_content == '' || reply2_content =='<br />' || reply2_content == '<br/>'){
+		res.send('评论的内容不能为空');
 		return;
 	}
 	

@@ -51,7 +51,7 @@
     	var reply_id = $btn.parent().attr('id');
     	var reply2_content = $btn.parent().find('.reply_textarea').val();
     	if(reply2_content == ''){
-    		alert('对不起，回复内容不能为空！');
+    		alert('评论的内容不能为空');
     	}
     	var data = {
     		reply_id: reply_id,
@@ -59,7 +59,9 @@
     		_csrf: '<%- _csrf %>'
     	};
     	$.post('/<%=article._id %>/reply_2', data, function(data){
-    		if(data != ''){
+    		if(data == '请登录后再发表评论' || data == '要评论的文章不存在或被删除' || data == '评论的内容不能为空'){
+    			alert(data);
+    		}else if(data != ''){
 	    		$btn.parent().before(data);
 	    		$btn.parent().find('.reply_textarea').val('');
     		}
