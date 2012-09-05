@@ -440,6 +440,9 @@ function get_articles_by_query(where, opt, cb){
 					article.edit = edit;
 					article.create_at = Util.format_date(article.create_time);
 					article.update_time = Util.format_date(article.update_at);
+					if(article.last_reply_at){
+						article.last_reply_time = Util.format_date(article.last_reply_at);
+					}
 					articles[i] = article;
 					proxy.trigger('articles.ready');
 				});

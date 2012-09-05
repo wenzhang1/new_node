@@ -14,24 +14,32 @@ var EventProxy = require('eventproxy').EventProxy;
 var check = require('validator').check,
     sanitize = require('validator').sanitize;
 var Util = require('../libs/utils');
+var url = require('url');
 
 
 //浏览标签对应的文章列表
 exports.article_list = function(req, res, next){
 	var tag_id = req.params.tid;
+	//单页显示文章数
+	var limit = 3;
+	var current_page = parseInt(req.query.page, 10) || 1;
+	var pathname = url.parse(req.url).pathname;
 	
 	ArticleTag.find({tag_id: tag_id}, function(err, articles_tag){
 		if(err) return next(err);
 		
-		var render = function(articles, tags){
+		var render = function(articles, tags, pages){
 			res.render('article_list', {
 				articles: articles,
-				tags: tags
+				tags: tags,
+				current_page: current_page,
+				pages: pages,
+				base_url: pathname
 			});
 		}
 		
 		var proxy = new EventProxy();
-		proxy.assign('articles', 'tags', render);
+		proxy.assign('articles', 'tags', 'pages', render);
 		
 		
 		var articles_ids = [];
@@ -39,7 +47,9 @@ exports.article_list = function(req, res, next){
 			articles_ids.push(articles_tag[i].article_id);
 		}
 		
-		articleCtrl.get_articles_by_query({_id:{'$in': articles_ids}}, {sort:[ ['create_time', 'desc'] ]}, function(err, articles){
+		var opt = { skip: (current_page - 1) * limit, limit: limit, sort:[ ['create_time', 'desc'], ['last_reply_at', 'desc'] ]};
+		
+		articleCtrl.get_articles_by_query({_id:{'$in': articles_ids}}, opt, function(err, articles){
 			if(err) return next(err);
 			
 			if(!articles){
@@ -55,6 +65,14 @@ exports.article_list = function(req, res, next){
 			
 			proxy.trigger('tags', tags);
 		});
+		
+		articleCtrl.get_article_counts({_id:{'$in': articles_ids}}, function(err, article_count){
+			if(err) return next(err);
+			
+			var pages = Math.ceil(article_count / limit);
+			
+			proxy.trigger('pages', pages);
+		})
 	});
 }
 //创建标签
@@ -258,6 +276,7 @@ function get_tags_by_query(where, opt, cb){
 		return cb(err, tags)
 	});
 }
+
 exports.get_all_tags = get_all_tags;
 exports.get_tag_by_query_once = get_tag_by_query_once;
 exports.get_tags_by_query = get_tags_by_query;
