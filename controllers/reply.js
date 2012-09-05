@@ -23,8 +23,8 @@ exports.reply_add = function(req, res, next){
 	var article_id = req.params.aid;
 	var reply_content = sanitize(req.body.reply_content).trim();
 	reply_content = sanitize(reply_content).xss();
-	if(reply_content == ''){
-		res.render('article_view/'+article_id, {error: '评论信息不能为空'});
+	if(reply_content == ''|| reply_content =='<br />' || reply_content == '<br/>'){
+		res.render('error', {error: '评论信息不能为空'});
 		return;
 	}
 
@@ -106,6 +106,49 @@ exports.reply2_add = function(req, res, next){
 			proxy.trigger('reply2_saved');
 		})
 	})
+}
+
+exports.reply_del = function(req, res, next){
+	if(!req.session.user || !req.session.user.is_admin){
+		res.render('error', {error: '对不起，你没有权限进行操作1'});
+		return;
+	}
+	
+	var reply_id = req.params.rid;
+	if(reply_id.length != '24'){
+		res.render('error', {error: '对不起，没有此回复或已被删除'});
+		return;
+	}
+	
+	if(req.session.user.is_admin){
+	get_reply_by_query_once({_id: reply_id}, function(err, reply){
+		if(err) return next(err);
+		
+		if(!reply){
+			res.render('error', {error: '对不起，没有此回复或已被删除'});
+			return;
+		}
+		
+		var proxy = new EventProxy();
+		var done = function(){
+			res.render('error', {sucess: '评论已删除'});
+			return;
+		}
+		proxy.assign('reply_removed', done);
+		articleCtrl.get_article_by_query_once({_id: reply.article_id}, function(err, article){
+			article.reply_count -= 1;
+			article.save();
+		});
+		reply.remove(function(err){
+			if(err) return next(err);
+			
+			proxy.trigger('reply_removed');
+		});
+	});
+	}else{
+		res.render('error', {error: '对不起，你没有权限进行操作'});
+		return;
+	}
 }
 
 function get_reply_by_query_once(where, cb){

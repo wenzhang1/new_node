@@ -56,4 +56,5 @@ module.exports = function(app){
     //reply
     app.post('/:aid/reply', reply.reply_add);
     app.post('/:aid/reply_2', reply.reply2_add);
+    app.get('/reply_del/:rid', reply.reply_del);
 }

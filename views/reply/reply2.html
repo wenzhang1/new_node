@@ -3,6 +3,7 @@
 		<%= reply.author.user_name%>
 	</span>
 	<a href="javascript:void(0);" id="reply_btn">@回复</a>
+	<a href="/reply_del/<%= reply._id%>">删除</a>
 	<p class="reply_content">
 		<%- reply.reply_content%>
 	</p>

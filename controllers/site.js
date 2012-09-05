@@ -16,7 +16,7 @@ exports.index = function(req, res, next){
 	var current_page = parseInt(req.query.page, 10) || 1;
 	var pathname = url.parse(req.url).pathname;
 	//单页显示文章数量
-	var limit = 1;
+	var limit = 3;
 	
 	var render = function (articles, tags, pages){
 		res.render('index', {
