@@ -14,6 +14,10 @@
     <span style="margin-left:10px;"><%= article.update_time%></span>
     <span style="margin-left:10px;"><%= article.edit.user_name%></span>
     <% } %>
+    <span style="margin-left:10px;">回复：<%= article.reply_count%></span>
+    <% if(article.reply_count > 0){ %>
+    <span style="margin-left:10px;">最后回复于：<%= article.last_reply_time%></span>
+    <% } %>
     <a style="margin-left:10px;" href="/article_view/<%= article._id%>">查看</a>
     <a style="margin-left:10px;" href="/article_edit/<%= article._id%>">修改</a>
     <a style="margin-left:10px;" href="/article_del/<%= article._id%>">删除</a>
