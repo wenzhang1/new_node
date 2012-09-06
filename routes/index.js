@@ -40,6 +40,7 @@ module.exports = function(app){
     app.get('/change_password/:uid', user.change_password);
     app.post('/change_password/:uid', user.change_password);
     app.get('/del_user/:uid', user.del_user);
+    app.get('/user_view/:uname', user.user_view);
     
     //upload
     app.get('/upload', upload.upload_html);

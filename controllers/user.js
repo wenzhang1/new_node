@@ -49,6 +49,19 @@ exports.user_views = function(req, res, next){
     });
 };
 
+exports.user_view = function(req, res, next){
+	var user_name = req.params.uname;
+	
+	get_user_by_query_once({user_name: user_name}, function(err, user){
+		if(err) return next(err);
+		
+		user.create_at = Util.format_date(user.create_time);
+		res.render('user_view', {
+			user: user,
+		});
+	});
+}
+
 //add user action
 exports.add_action = function(req, res, next){
     var user_name = sanitize(req.body.username).trim();
