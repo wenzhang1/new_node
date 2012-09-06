@@ -1,8 +1,6 @@
 <div class="reply_inner_box">
-	<span class="reply_author">
-		<%= reply.author.user_name%>
-	</span>
-	<a href="javascript:void(0);" id="reply_btn">@回复</a>
+	<span class="reply_author"><a href="/user_view/<%= reply.author.user_name%>"><%= reply.author.user_name%></a></span>
+	<a href="javascript:void(0);" class="reply_at_btn">@回复</a>
 	<a href="/reply_del/<%= reply._id%>">删除</a>
 	<p class="reply_content">
 		<%- reply.reply_content%>
@@ -14,9 +12,9 @@
 		<% if(reply.replies.length > 0){ %>
 			<%-partial('reply/reply2',{collection: reply.replies, as: 'reply'}) %>
 		<% } %>
-		<div class="reply_area" id="<%= reply._id%>">
+		<div class="reply_area" id="<%= reply._id%>" style="display: none">
 			<p>评论：</p>
-			<textarea class="reply_textarea" name="reply_content" id="<%= reply._id%>" style="width: 500px; height:150px;"></textarea>
+			<textarea class="reply_textarea" name="reply_content" id="reply_<%= reply._id%>" style="width: 500px; height:150px;"></textarea>
 			<input type="submit" class="reply2_submit_btn" value="提交">
 		</div>
 	</div>

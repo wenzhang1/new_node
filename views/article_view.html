@@ -22,16 +22,38 @@
 	<p>发表评论：</p>
 	<form action="/<%=article._id %>/reply" method="post">
 		<input type="hidden" name="_csrf" value="<%= _csrf%>" />
-		<textarea class="reply_textarea" name="reply_content" style="width: 500px; height:150px;"></textarea>
+		<textarea class="reply_textarea" name="reply_content" id="reply_content" style="width: 500px; height:150px;"></textarea>
 		<input type="submit" value="提交">
 	</form>
 <% } %>
 <script>
-   //装载编辑器
+    //装载编辑器
+   	var reply_ids = [];
+   	for(var i = 0; i<$('.reply_area').length; i++){
+   		var id = $('.reply_area:eq('+ i +')').attr('id');
+   		reply_ids.push(id);
+   	}
+    window.editorMap = {};
     var editor;
     KindEditor.ready(function(K) {
-            editor = K.create('.reply_textarea',{
-        	items : ['source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+    	for(var i = 0; i<reply_ids.length; i++){
+            editorMap[reply_ids[i]] = K.create('#reply_' + reply_ids[i],{
+	        	items : ['source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+						'code', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+						'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
+				afterCreate: function(){
+					this.sync();
+				},
+				afterChange: function(){
+					this.sync();
+				},
+				afterBlur: function(){
+					this.sync();
+				},
+        	});
+       }
+       editor = K.create('#reply_content',{
+       		items : ['source', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
 					'code', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
 					'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
 			afterCreate: function(){
@@ -43,13 +65,13 @@
 			afterBlur: function(){
 				this.sync();
 			},
-        });
+       });
     });
-    
     $('.reply2_submit_btn').click(function(){
     	var $btn = $(this);
     	var reply_id = $btn.parent().attr('id');
     	var reply2_content = $btn.parent().find('.reply_textarea').val();
+    	var this_editor = editorMap[reply_id].sync();
     	if(reply2_content == ''){
     		alert('评论的内容不能为空');
     	}
@@ -63,8 +85,45 @@
     			alert(data);
     		}else if(data != ''){
 	    		$btn.parent().before(data);
-	    		$btn.parent().find('.reply_textarea').val('');
+	    		this_editor.html('');
+	    		$btn.parents('.reply_area').hide();
     		}
-    	}); 
+    	});
+    });
+    
+    $('.reply_at_btn').click(function(){
+    	var $btn = $(this);
+    	var editor_box = $btn.siblings().find('.reply_area');
+    	var user_html = $btn.parent().find('.reply_author').html();
+    	var reply_box_id = $btn.siblings().find('.reply_area').attr('id');
+    	editor_box.toggle('fast');
+    	var this_editor = editorMap[reply_box_id].sync();
+    	var html = this_editor.html();
+    	this_editor.focus();
+    	if(html == '' || html == '<br />' || html == '<br/>'){
+			this_editor.html('');
+			this_editor.html('@' + user_html + '<br />');
+    	}else{
+    		this_editor.html('');
+    	}
+    	return false;
+    });
+    
+    $('.reply2_at_btn').click(function(){
+    	var $btn = $(this);
+    	var editor_box = $btn.parents('.reply2_box').find('.reply_area');
+    	var user_html = $btn.parent().find('.reply_author').html();
+    	var reply_box_id = $btn.parents('.reply_inner_box').find('.reply_area').attr('id');
+    	editor_box.toggle('fast');
+    	var this_editor = editorMap[reply_box_id].sync();
+    	var html = this_editor.html();
+    	this_editor.focus();
+    	if(html == '' || html == '<br />' || html == '<br/>'){
+			this_editor.html('');
+			this_editor.html('@' + user_html + '<br />');
+    	}else{
+    		this_editor.html('');
+    	}
+    	return false;
     });
 </script>

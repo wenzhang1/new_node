@@ -1,8 +1,6 @@
 <div class="reply2_inner_box">
-	<span class="reply_author">
-		<%= reply.author.user_name%>
-	</span>
-	<a href="javascript:void(0);" id="reply_btn">@回复</a>
+	<span class="reply_author"><a href="/user_view/<%= reply.author.user_name%>"><%= reply.author.user_name%></a></span>
+	<a href="javascript:void(0);" class="reply2_at_btn">@回复</a>
 	<a href="/reply_del/<%= reply._id%>">删除</a>
 	<p class="reply_content">
 		<%- reply.reply_content%>
@@ -12,7 +10,7 @@
 	</span>
 </div>
 <style>
-.reply_inner_box{border-bottom: 2px solid green;}
+.reply_inner_box{border-bottom: 2px solid green;padding-bottom: 10px;}
 .reply2_box{border-top: 2px solid #000;}
 .reply2_inner_box{margin-left: 40px;border-bottom: 1px solid #f90; }
 </style>
