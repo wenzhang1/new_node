@@ -224,7 +224,7 @@ a:hover {
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
-  width: 940px;
+  width: 1000px;
 }
 
 .span12 {
@@ -240,7 +240,7 @@ a:hover {
 }
 
 .span9 {
-  width: 700px;
+  width: 760px;
 }
 
 .span8 {
@@ -4345,7 +4345,7 @@ input[type="submit"].btn.btn-mini {
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
-  width: 940px;
+  width: 1000px;
 }
 
 .navbar-fixed-top {

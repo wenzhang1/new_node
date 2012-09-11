@@ -17,9 +17,9 @@ exports.index = function(req, res, next){
 	var current_page = parseInt(req.query.page, 10) || 1;
 	var pathname = url.parse(req.url).pathname;
 	//单页显示文章数量
-	var limit = 3;
+	var limit = 15;
 	
-	var render = function (articles, tags, pages, hot_articles, new_reply){
+	var render = function (articles, tags, pages, hot_articles, last_replies){
 		res.render('index', {
 			articles: articles,
 			tags: tags,
@@ -27,11 +27,11 @@ exports.index = function(req, res, next){
 			pages: pages,
 			base_url: pathname,
 			hot_articles: hot_articles,
-			new_reply: new_reply
+			last_replies: last_replies
 		});
 	}
 	var proxy = new EventProxy();
-	proxy.assign('articles', 'tags', 'pages', 'hot_articles', 'new_reply', render);
+	proxy.assign('articles', 'tags', 'pages', 'hot_articles', 'last_replies', render);
 	var where = {};
 	var opt = { skip: (current_page - 1) * limit, limit: limit, sort: [ ['create_time', 'desc'], ['last_reply_at', 'desc'] ]};
 	articleCtrl.get_articles_by_query(where, opt, function(err, articles){
@@ -44,9 +44,10 @@ exports.index = function(req, res, next){
 		
 		proxy.trigger('hot_articles', articles);
 	});
-	replyCtrl.get_reply_by_query(where, { limit: 4, sort: [ ['reply_at', 'desc'] ]}, function(err, replies){
+	articleCtrl.get_articles_by_query(where, { limit: 5, sort: [ ['last_reply_at', 'desc'] ]}, function(err, articles){
 		if(err) return next(err);
-		proxy.trigger('new_reply', replies);
+		
+		proxy.trigger('last_replies', articles);
 	});
 	tagCtrl.get_all_tags(function(err, tags){
 		if(err) return next(err);

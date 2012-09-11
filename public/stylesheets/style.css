@@ -1,5 +1,6 @@
 body{
     padding-top: 50px;
+    font-size: 12px;
 }
 .navbar-search{
     float: right;
@@ -43,9 +44,13 @@ body{
     background: #F5F5F5;
 }
 .article_list article header h3{
-    font-size: 16px;
+    font-size: 18px;
     line-height: 24px;
     margin: 0px;
+    white-space: nowrap;
+	 overflow:hidden;
+	 text-overflow: ellipsis;
+	 width: 650px;
 }
 .article_list article header .author_box{
     line-height: 18px;
@@ -93,7 +98,7 @@ body{
     margin-left: 10px;
 }
 .container .side_bar aside{
-    width: 280px;
+    width: 200px;
     margin: 0 auto;
     padding: 0 10px;
     margin-bottom: -1px;
@@ -114,7 +119,6 @@ body{
 }
 #user .user_icon{
     line-height: 80px;
-    margin-left: 30px;
 }
 #user ul{
     margin-left: 10px;
@@ -140,14 +144,28 @@ body{
     margin: 10px 0;
 }
 .side_list ul li{
-    line-height: 24px;
-    padding-right: 5px;
+	padding: 3px 5px 0 0;
 }
 .side_list ul li:hover{
     background: #F3F3F3;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+}
+.side_list ul li a.article_title{
+	width: 135px;
+	display: inline-block;
+	white-space: nowrap;
+	overflow:hidden;
+	text-overflow: ellipsis;
+}
+.side_list ul li span{
+	width: 60px;
+	display: inline-block;
+	white-space: nowrap;
+	overflow:hidden;
+	text-overflow: ellipsis;
+	text-align: right;
 }
 .side_list ul li span a{
     color: #999;

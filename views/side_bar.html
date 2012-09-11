@@ -1,4 +1,4 @@
-<div class="side_bar span4">
+<div class="side_bar span3">
 	<aside id="user" class="clearfix">
 		<% if(locals.current_user){ %>
 		<div class="pull-left user_icon">
@@ -35,7 +35,7 @@
 			<% if(hot_articles.length > 0){ %>
 				<% hot_articles.forEach(function(hot_article){ %>
 				<li>
-					<a href="/article_view/<%= hot_article._id %>"><%= hot_article.title%></a>
+					<a class="article_title" href="/article_view/<%= hot_article._id %>"><%= hot_article.title%></a>
 					<span class="pull-right"><a href="/user_view/<%=hot_article.author.user_name %>"><%= hot_article.author.user_name%></a></span>
 				</li>
 				<% }) %>
@@ -47,12 +47,12 @@
 		</ul>
 	</aside>
 	<aside class="side_list">
-		<h2>最新回复</h2>
+		<h2>最新回复的主题</h2>
 		<ul class="unstyled">
-			<% if(new_reply.length > 0){ %>
-				<% new_reply.forEach(function(reply){ %>
+			<% if(last_replies.length > 0){ %>
+				<% last_replies.forEach(function(reply){ %>
 				<li>
-					<a href="/article_view/<%= reply.article_id%>"><%= reply.reply_content%></a>
+					<a class="article_title" href="/article_view/<%= reply._id%>"><%= reply.title%></a>
 					<span class="pull-right"><a href="/user_view/<%= reply.author.user_name%>"><%= reply.author.user_name%></a></span>
 				</li>
 				<% }) %>
