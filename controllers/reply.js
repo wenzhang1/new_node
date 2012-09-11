@@ -53,6 +53,13 @@ exports.reply_add = function(req, res, next){
 			proxy.trigger('reply_saved');
 		});
 	});
+	
+	userCtrl.get_user_by_query_once({_id: reply.author_id}, function(err, user){
+		user.reply_count += 1;
+		user.save();
+		req.session.user._id.reply_count += 1;
+		proxy.trigger('user_saved');
+	});
 }
 
 exports.reply2_add = function(req, res, next){
@@ -170,8 +177,8 @@ function get_reply_by_query_once(where, cb){
 	});
 }
 
-function get_reply_by_query(where, cb){
-	Reply.find(where,[], {sort: [['reply_at', 'asc']]}, function(err, replies){
+function get_reply_by_query(where, opt, cb){
+	Reply.find(where,[], opt, function(err, replies){
 		if(err) return cb(err);
 		
 		if(replies.length == 0){

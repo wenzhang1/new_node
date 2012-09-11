@@ -1,16 +1,190 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+body{
+    padding-top: 50px;
 }
-
-a {
-  color: #00B7FF;
+.navbar-search{
+    float: right;
 }
-
-.tag_box{
-	border: 1px solid #00B7FF;
-	cursor: pointer;
+.tag_list .nav{
+    margin-bottom: 5px;
 }
-.is_selected{
-	background: #00B7FF;
+.navbar .nav>li>a:hover{
+    background: #EFEFEF; 
+}
+.container .article_list,
+.container .side_bar{
+    border: 1px solid #ccc;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+.main{
+    margin-bottom: 20px;
+}
+.container .article_list{
+    margin: 0;
+}
+.container .create_btn{
+    border-bottom: 1px solid #E3E8E3;
+}
+.container .create_btn h2{
+    margin: 10px 0 10px 10px;
+    font-size: 16px;
+    color: #999;
+    line-height: 18px;
+}
+.container .create_btn a{
+    margin: 4px 10px 0 0;
+}
+.container .article_list article{
+    padding: 10px 10px;
+    border-bottom: 1px solid #E3E8E3;
+}
+.container .article_list article:hover{
+    background: #F5F5F5;
+}
+.article_list article header h3{
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0px;
+}
+.article_list article header .author_box{
+    line-height: 18px;
+    margin-bottom: 10px;
+    color: #666;
+}
+.article_list article header .author_box span{
+    margin-right: 22px; 
+}
+.article_list article section p{
+    text-indent: 24px;
+}
+.article_list article footer{
+    color: #666;
+}
+.article_list article footer span{
+    margin-right: 10px;
+}
+.article_list article footer div.tag_include{
+    margin-bottom: 10px;
+    text-align: right;
+}
+.article_list article footer div.tag_include a,
+.article_list article footer span b{
+    background: #C8CFE0;
+    padding: 0 5px;
+    margin-left: 5px;
+    color: #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.article_list article footer div.tag_include a:hover{
+    text-decoration: none;
+    background: #657ba9;
+    color: #fff;
+}
+.article_list article footer span.last_reply_time{
+    margin-right: 0;
+}
+.article_list .pagination{
+    margin: 10px;
+} 
+.container .side_bar{
+    margin-left: 10px;
+}
+.container .side_bar aside{
+    width: 280px;
+    margin: 0 auto;
+    padding: 0 10px;
+    margin-bottom: -1px;
+}
+.side_bar #user{
+    border-bottom: 1px dashed #ccc;
+}
+.side_bar #user .info_box{
+	text-align: center;
+}
+.info_box h2{
+	font-size: 14px;
+	color: #666;
+}
+.info_box p{
+	color: #666;
+	margin-top: 15px;
+}
+#user .user_icon{
+    line-height: 80px;
+    margin-left: 30px;
+}
+#user ul{
+    margin-left: 10px;
+    padding-top: 25px;
+    color: #666;
+}
+#user ul li b{
+    background: #C8CFE0;
+    padding: 0 5px;
+    margin-left: 5px;
+    color: #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px; 
+}
+.side_list{
+    border-bottom: 1px dashed #ccc;
+}
+.side_list h2{
+    color: #999999;
+    font-size: 16px;
+    line-height: 18px;
+    margin: 10px 0;
+}
+.side_list ul li{
+    line-height: 24px;
+    padding-right: 5px;
+}
+.side_list ul li:hover{
+    background: #F3F3F3;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.side_list ul li span a{
+    color: #999;
+}
+.article_container{
+    margin-left: 0;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+.article_container section{
+    padding: 30px 10px 10px 10px;
+}
+.article_container section p{
+    text-indent: 24px;
+}
+.article_container footer{
+    padding: 10px;
+}
+.article_container footer .author_box{
+    color: #666;
+}
+.article_container footer .tag_include{
+    text-align: right;
+}
+.article_container footer .tag_include a{
+    background: #C8CFE0;
+    padding: 0 5px;
+    margin-left: 5px;
+    color: #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.article_container footer .tag_include a:hover{
+    text-decoration: none;
+    background: #657ba9;
+    color: #fff; 
 }

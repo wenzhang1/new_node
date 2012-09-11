@@ -105,6 +105,11 @@ exports.article_create = function(req, res, next){
 				proxy.trigger('articles_tag_saved');
 			}
 			
+			userCtrl.get_user_by_query_once({_id: article.author_id}, function(err, user){
+				user.article_count += 1;
+				user.save();
+				req.session.user._id.article_count += 1;
+			});
 			proxy.after('article_tag_saved', tags_id_array.length, article_tag_save_done);
 			
 			for(var i = 0; i<tags_id_array.length; i++){
@@ -141,7 +146,7 @@ exports.article_view = function(req, res, next){
 	proxy.assign('article', render);
 	
 	var where = {_id: article_id}
-	get_article_by_query_once(where, function(err, article, author, edit, tags, replies){
+	get_article_by_query_full(where, function(err, article, author, edit, tags, replies){
 		if(err) return next(err);
 		if(!article){
 			res.render('error', {error: '无此信息或已被删除'});
@@ -153,6 +158,10 @@ exports.article_view = function(req, res, next){
 		article.replies = replies;
 		article.create_at = Util.format_date(article.create_time);
 		article.update_time = Util.format_date(article.update_at);
+		article.view_count += 1;
+		article.save(function(err){
+			if(err) return next(err);
+		});
 		proxy.trigger('article', article);
 	});
 }
@@ -374,7 +383,7 @@ function get_article_by_query_once(query, cb){
 			proxy.trigger('author', null);
 			proxy.trigger('tags', []);
 			proxy.trigger('edit', null);
-			proxy.triiger('replies', null);
+			proxy.trigger('replies', null);
 			return;
 		}
 		
@@ -391,7 +400,61 @@ function get_article_by_query_once(query, cb){
 			proxy.trigger('edit', edit);
 		});
 		var reply_where = {article_id: article._id};
-		replyCtrl.get_reply_by_query(reply_where, function(err, replies){
+		replyCtrl.get_reply_by_query_once(reply_where, function(err, replies){
+			if(err) return cb(err);
+			proxy.trigger('replies', replies);
+		});
+		
+		ArticleTag.find({article_id: article._id}, function(err, articleTags){
+			if(err) return cb(err);
+			
+			var tags_ids = [];
+			for(var i = 0; i<articleTags.length; i++){
+				tags_ids.push(articleTags[i].tag_id);
+			}
+			
+			tagCtrl.get_tags_by_query({_id:{'$in': tags_ids}}, function(err, tags){
+				if(err) return cb(err);
+				proxy.trigger('tags', tags);
+			})
+		})
+	});
+}
+
+//获得所有文章信息，所有评论
+function get_article_by_query_full(query, cb){
+	var proxy = new EventProxy();
+	var done = function(article, author, edit, tags, replies){
+	    return cb(null, article, author, edit, tags, replies);
+	};
+	
+	proxy.assign('article', 'author', 'edit', 'tags', 'replies', done);
+	
+	Article.findOne(query, function(err, article){
+		if(err) return cb(err);
+		if(!article){
+			proxy.trigger('article', null);
+			proxy.trigger('author', null);
+			proxy.trigger('tags', []);
+			proxy.trigger('edit', null);
+			proxy.trigger('replies', null);
+			return;
+		}
+		
+		proxy.trigger('article', article);
+		
+		var user_where = {_id: article.author_id};
+		userCtrl.get_user_by_query_once(user_where, function(err, author){
+			if(err) return cb(err);
+			proxy.trigger('author', author);
+		});
+		user_where = {_id: article.edit_id};
+		userCtrl.get_user_by_query_once(user_where, function(err, edit){
+			if(err) return cb(err);
+			proxy.trigger('edit', edit);
+		});
+		var reply_where = {article_id: article._id};
+		replyCtrl.get_reply_by_query(reply_where,{sort: [['reply_at', 'asc']]}, function(err, replies){
 			if(err) return cb(err);
 			proxy.trigger('replies', replies);
 		});
@@ -434,12 +497,14 @@ function get_articles_by_query(where, opt, cb){
 		for(i = 0; i<articles_id.length; i++){
 			(function(i){
 				where = {_id: articles_id[i]}
-				get_article_by_query_once(where, function(err, article, author, edit, tags){
+				get_article_by_query_once(where, function(err, article, author, edit, tags, replies){
 					if(err) return cb(err);
 					article.author = author;
 					article.edit = edit;
 					article.create_at = Util.format_date(article.create_time);
 					article.update_time = Util.format_date(article.update_at);
+					article.tags = tags;
+					article.reply = replies;
 					if(article.last_reply_at){
 						article.last_reply_time = Util.format_date(article.last_reply_at);
 					}

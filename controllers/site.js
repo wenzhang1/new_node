@@ -10,6 +10,7 @@ var EventProxy = require('eventproxy').EventProxy;
 var articleCtrl = require('./article');
 var userCtrl = require('./user');
 var tagCtrl = require('./tag');
+var replyCtrl = require('./reply');
 var url = require('url');
 
 exports.index = function(req, res, next){
@@ -18,23 +19,34 @@ exports.index = function(req, res, next){
 	//单页显示文章数量
 	var limit = 3;
 	
-	var render = function (articles, tags, pages){
+	var render = function (articles, tags, pages, hot_articles, new_reply){
 		res.render('index', {
 			articles: articles,
 			tags: tags,
 			current_page: current_page,
 			pages: pages,
-			base_url: pathname
+			base_url: pathname,
+			hot_articles: hot_articles,
+			new_reply: new_reply
 		});
 	}
 	var proxy = new EventProxy();
-	proxy.assign('articles', 'tags', 'pages', render);
+	proxy.assign('articles', 'tags', 'pages', 'hot_articles', 'new_reply', render);
 	var where = {};
 	var opt = { skip: (current_page - 1) * limit, limit: limit, sort: [ ['create_time', 'desc'], ['last_reply_at', 'desc'] ]};
 	articleCtrl.get_articles_by_query(where, opt, function(err, articles){
 		if(err) return next(err);
 		
 		proxy.trigger('articles', articles);
+	});
+	articleCtrl.get_articles_by_query(where, { limit: 5, sort: [ ['view_count', 'desc'] ]}, function(err, articles){
+		if(err) return next(err);
+		
+		proxy.trigger('hot_articles', articles);
+	});
+	replyCtrl.get_reply_by_query(where, { limit: 4, sort: [ ['reply_at', 'desc'] ]}, function(err, replies){
+		if(err) return next(err);
+		proxy.trigger('new_reply', replies);
 	});
 	tagCtrl.get_all_tags(function(err, tags){
 		if(err) return next(err);

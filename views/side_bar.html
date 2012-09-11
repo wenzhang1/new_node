@@ -1,0 +1,66 @@
+<div class="side_bar span4">
+	<aside id="user" class="clearfix">
+		<% if(locals.current_user){ %>
+		<div class="pull-left user_icon">
+			<a href="/user_view/<%= current_user.user_name %>" class="btn btn-info">
+				<i class="icon-user icon-white"></i><%= current_user.user_name%>
+			</a>
+		</div>
+		<ul class="pull-left unstyled">
+			<li>
+				发表的文章：<b><%= current_user.article_count %></b>
+			</li>
+			<li>
+				发表的回复：<b><%= current_user.reply_count %></b>
+			</li>
+		</ul>
+		<% }else{ %>
+		<div class="info_box">
+			<h2>New Node开源BLOG管理系统,欢迎您！</h2>
+			<a href="/user_add" class="btn btn-info">
+				注册
+			</a>
+			<p>
+				已注册用户请
+				<a href="/login">
+					登录
+				</a>
+			</p>
+		</div>
+		<% } %>
+	</aside>
+	<aside class="side_list">
+		<h2>热门文章</h2>
+		<ul class="unstyled">
+			<% if(hot_articles.length > 0){ %>
+				<% hot_articles.forEach(function(hot_article){ %>
+				<li>
+					<a href="/article_view/<%= hot_article._id %>"><%= hot_article.title%></a>
+					<span class="pull-right"><a href="/user_view/<%=hot_article.author.user_name %>"><%= hot_article.author.user_name%></a></span>
+				</li>
+				<% }) %>
+			<% }else{ %>
+			<li>
+				<a>暂无热门文章</a>
+			</li>
+			<% } %>
+		</ul>
+	</aside>
+	<aside class="side_list">
+		<h2>最新回复</h2>
+		<ul class="unstyled">
+			<% if(new_reply.length > 0){ %>
+				<% new_reply.forEach(function(reply){ %>
+				<li>
+					<a href="/article_view/<%= reply.article_id%>"><%= reply.reply_content%></a>
+					<span class="pull-right"><a href="/user_view/<%= reply.author.user_name%>"><%= reply.author.user_name%></a></span>
+				</li>
+				<% }) %>
+			<% }else{ %>
+			<li>
+				<a>暂无回复</a>
+			</li>
+			<% } %>
+		</ul>
+	</aside>
+</div>

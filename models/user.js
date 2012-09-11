@@ -14,7 +14,9 @@ var userSchema = new Schema({
     create_time : {type : Date, default : Date.now},
     update_at : {type: Date, default : Date.now},
     email : {type : String},
-    edit_id: {type : ObjectId}
+    edit_id: {type : ObjectId},
+    reply_count: {type : Number, default : 0},
+    article_count: {type : Number, default : 0}
 });
 
 mongoose.model('User',userSchema);
