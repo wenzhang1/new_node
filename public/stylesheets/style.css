@@ -98,7 +98,7 @@ body{
     margin-left: 10px;
 }
 .container .side_bar aside{
-    width: 200px;
+    width: 280px;
     margin: 0 auto;
     padding: 0 10px;
     margin-bottom: -1px;
@@ -119,6 +119,13 @@ body{
 }
 #user .user_icon{
     line-height: 80px;
+}
+#user .user_icon a{
+	 display: inline-block;
+	 overflow: hidden;
+	 max-width: 180px;
+	 text-overflow: ellipsis;
+	 white-space: nowrap;
 }
 #user ul{
     margin-left: 10px;
@@ -153,7 +160,7 @@ body{
     border-radius: 3px;
 }
 .side_list ul li a.article_title{
-	width: 135px;
+	width: 215px;
 	display: inline-block;
 	white-space: nowrap;
 	overflow:hidden;
