@@ -1,16 +1,17 @@
-<div class="reply2_inner_box">
-	<span class="reply_author"><a href="/user_view/<%= reply.author.user_name%>"><%= reply.author.user_name%></a></span>
-	<a href="javascript:void(0);" class="reply2_at_btn">@回复</a>
-	<a href="/reply_del/<%= reply._id%>">删除</a>
-	<p class="reply_content">
-		<%- reply.reply_content%>
-	</p>
-	<span class="reply_time">
-		<%= reply.reply_time%>
-	</span>
-</div>
-<style>
-.reply_inner_box{border-bottom: 2px solid green;padding-bottom: 10px;}
-.reply2_box{border-top: 2px solid #000;}
-.reply2_inner_box{margin-left: 40px;border-bottom: 1px solid #f90; }
-</style>
+<section class="reply2_inner_box">
+	<header class="clearfix">
+      <span class="reply_author pull-left"><a href="/user_view/<%= reply.author.user_name%>"><%= reply.author.user_name%></a></span>
+      <div class="pull-right">
+         <a href="javascript:void(0);" class="reply_at_btn">@回复</a>
+         <a href="/reply_del/<%= reply._id%>">删除</a>
+      </div>
+   </header>
+   <p class="reply_content">
+      <%- reply.reply_content%>
+   </p>
+   <footer class="time_box clearfix">
+      <span class="pull-right">
+         回复于：<time pubdate datetime="<%= reply.reply_time%>"><%= reply.reply_time%></time>
+      </span>
+   </footer>
+</section>

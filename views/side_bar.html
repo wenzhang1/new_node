@@ -32,8 +32,8 @@
 	<aside class="side_list">
 		<h2>热门文章</h2>
 		<ul class="unstyled">
-			<% if(hot_articles.length > 0){ %>
-				<% hot_articles.forEach(function(hot_article){ %>
+			<% if(locals.hot_articles){ %>
+				<% locals.hot_articles.forEach(function(hot_article){ %>
 				<li>
 					<a class="article_title" href="/article_view/<%= hot_article._id %>"><%= hot_article.title%></a>
 					<span class="pull-right"><a href="/user_view/<%=hot_article.author.user_name %>"><%= hot_article.author.user_name%></a></span>
@@ -49,8 +49,8 @@
 	<aside class="side_list">
 		<h2>最新回复的主题</h2>
 		<ul class="unstyled">
-			<% if(last_replies.length > 0){ %>
-				<% last_replies.forEach(function(reply){ %>
+			<% if(locals.last_replies){ %>
+				<% locals.last_replies.forEach(function(reply){ %>
 				<li>
 					<a class="article_title" href="/article_view/<%= reply._id%>"><%= reply.title%></a>
 					<span class="pull-right"><a href="/user_view/<%= reply.author.user_name%>"><%= reply.author.user_name%></a></span>

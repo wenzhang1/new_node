@@ -1,11 +1,15 @@
 <header>
 	<nav class="tag_list">
 		<ul class="nav nav-pills">
-			<% tags.forEach(function(tag){ %>
-				<li>
-					<a href="/tag/<%= tag._id%>"><%= tag.name%></a>
-				</li>
-			<% }) %>
+		   <% if(locals.tags){ %>
+   			<% locals.tags.forEach(function(tag){ %>
+   				<li>
+   					<a href="/tag/<%= tag._id%>"><%= tag.name%></a>
+   				</li>
+   			<% }) %>
+			<% }else{ %>
+			   暂无标签
+			<% } %>
 		</ul>
 	</nav>
 </header>
