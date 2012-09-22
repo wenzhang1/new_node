@@ -19,40 +19,22 @@ exports.index = function(req, res, next){
 	//单页显示文章数量
 	var limit = 15;
 	
-	var render = function (articles, tags, pages, hot_articles, last_replies){
+	var render = function (articles, pages){
 		res.render('index', {
 			articles: articles,
-			tags: tags,
 			current_page: current_page,
 			pages: pages,
-			base_url: pathname,
-			hot_articles: hot_articles,
-			last_replies: last_replies
+			base_url: pathname
 		});
 	}
 	var proxy = new EventProxy();
-	proxy.assign('articles', 'tags', 'pages', 'hot_articles', 'last_replies', render);
+	proxy.assign('articles', 'pages', render);
 	var where = {};
 	var opt = { skip: (current_page - 1) * limit, limit: limit, sort: [ ['create_time', 'desc'], ['last_reply_at', 'desc'] ]};
 	articleCtrl.get_articles_by_query(where, opt, function(err, articles){
 		if(err) return next(err);
 		
 		proxy.trigger('articles', articles);
-	});
-	articleCtrl.get_articles_by_query(where, { limit: 5, sort: [ ['view_count', 'desc'] ]}, function(err, articles){
-		if(err) return next(err);
-		
-		proxy.trigger('hot_articles', articles);
-	});
-	articleCtrl.get_articles_by_query(where, { limit: 5, sort: [ ['last_reply_at', 'desc'] ]}, function(err, articles){
-		if(err) return next(err);
-		
-		proxy.trigger('last_replies', articles);
-	});
-	tagCtrl.get_all_tags(function(err, tags){
-		if(err) return next(err);
-		
-		proxy.trigger('tags', tags);
 	});
 	articleCtrl.get_article_counts({}, function(err, article_count){
 		if(err) return next(err);
@@ -61,3 +43,32 @@ exports.index = function(req, res, next){
 		proxy.trigger('pages', pages);
 	});
 };
+
+//输出侧边栏
+exports.side_bar = function(req, res, next){
+	var render = function(tags, hot_articles, last_replies){
+		res.local('tags', tags);
+		res.local('hot_articles', hot_articles);
+		res.local('last_replies', last_replies);
+		return next();
+	}
+	var proxy = new EventProxy();
+	proxy.assign('tags', 'hot_articles', 'last_replies', render);
+	
+	tagCtrl.get_all_tags(function(err, tags){
+		if(err) return next(err);
+		
+		proxy.trigger('tags', tags);
+	});
+	articleCtrl.get_articles_by_query({}, { limit: 5, sort: [ ['view_count', 'desc'] ]}, function(err, articles){
+		if(err) return next(err);
+		
+		proxy.trigger('hot_articles', articles);
+	});
+	
+	articleCtrl.get_articles_by_query({}, { limit: 5, sort: [ ['last_reply_at', 'desc'] ]}, function(err, articles){
+		if(err) return next(err);
+		
+		proxy.trigger('last_replies', articles);
+	});
+}

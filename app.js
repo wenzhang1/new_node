@@ -40,6 +40,8 @@ app.configure(function(){
   }));
   //检测用户中间件
   app.use(require('./controllers/user').auth_user);
+  //输出侧边栏
+  app.use(require('./controllers/site').side_bar);
   var csrf = express.csrf();
   app.use(function(req, res, next){
     if(req.body && req.body.user_action === 'uploadImg'){

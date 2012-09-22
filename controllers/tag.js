@@ -28,10 +28,9 @@ exports.article_list = function(req, res, next){
 	ArticleTag.find({tag_id: tag_id}, function(err, articles_tag){
 		if(err) return next(err);
 		
-		var render = function(articles, tags, pages){
+		var render = function(articles, pages){
 			res.render('article_list', {
 				articles: articles,
-				tags: tags,
 				current_page: current_page,
 				pages: pages,
 				base_url: pathname
@@ -39,7 +38,7 @@ exports.article_list = function(req, res, next){
 		}
 		
 		var proxy = new EventProxy();
-		proxy.assign('articles', 'tags', 'pages', render);
+		proxy.assign('articles', 'pages', render);
 		
 		
 		var articles_ids = [];
@@ -58,12 +57,6 @@ exports.article_list = function(req, res, next){
 			}
 			
 			proxy.trigger('articles', articles);
-		});
-		
-		get_all_tags(function(err, tags){
-			if(err) return next(err);
-			
-			proxy.trigger('tags', tags);
 		});
 		
 		articleCtrl.get_article_counts({_id:{'$in': articles_ids}}, function(err, article_count){
