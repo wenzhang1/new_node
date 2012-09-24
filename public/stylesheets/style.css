@@ -367,7 +367,8 @@ div.tag_include a:hover {
 .article_create_inner{
 	width:660px;
 	margin: 0 auto;
-	margin: 20px 0;
+	margin-top: 20px;
+	margin-bottom: 20px;
 }
 .article_create_inner .form-horizontal .control-label{
 	width: 100px;
