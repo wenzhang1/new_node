@@ -3,7 +3,8 @@
 		<% if(locals.current_user){ %>
 		<div class="pull-left user_icon">
 			<a href="/user_view/<%= current_user.user_name %>" class="btn btn-info">
-				<i class="icon-user icon-white"></i><%= current_user.user_name%>
+				<i class="icon-user icon-white"></i>
+				<span><%= current_user.user_name%></span>
 			</a>
 		</div>
 		<ul class="pull-left unstyled">

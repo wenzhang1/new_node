@@ -14,7 +14,7 @@
    </nav>
 </header>
 <% if(article){ %>
-<div class="article_container span8">
+<div class="main_left article_container span8">
    <article id="article_content">
       <header class="clearfix create_btn">
          <h2 class="pull-left"><%= article.title%></h2>
@@ -50,7 +50,13 @@
          <header class="clearfix create_btn">
             <h2 class="pull-left">评论列表</h2>
          </header>
+         <% if(article.replies.length>0){ %>
          <%- partial('reply/reply', article.replies) %>
+         <% }else{ %>
+     	<section class="reply_inner_box">
+     		此文章下暂无评论
+     	</section>
+         <% } %>
          <div class="add_reply create_btn">
             <h2>发表评论：</h2>
             <form class="clearfix" action="/<%=article._id %>/reply" method="post">

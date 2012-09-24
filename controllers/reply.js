@@ -46,7 +46,7 @@ exports.reply_add = function(req, res, next){
 			if(err) return next(err);
 			
 			article.last_reply_at = Date.now();
-			article.last_reply_author = req.session.user._id;
+			article.last_reply_id = reply._id;
 			article.reply_count += 1;
 			article.save();
 			
@@ -106,7 +106,7 @@ exports.reply2_add = function(req, res, next){
 			if(err) return next(err);
 			
 			article.last_reply_at = Date.now();
-			article.last_reply_author = req.session.user._id;
+			article.last_reply_id = reply._id;
 			article.reply_count += 1;
 			article.save();
 			

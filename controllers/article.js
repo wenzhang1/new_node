@@ -60,12 +60,12 @@ exports.article_create = function(req, res, next){
 					}
 				}
 				
-				
+				console.log(content);
 				res.render('article_edit', {error: '标题不能为空', content: content, tags: tags});
 				return;
 			});
 		}
-		if(content == ''){
+		if(content == '' || content == '<br />' || content == '<br/>'){
 			tagCtrl.get_all_tags(function(err, tags){
 				if(err) return next(err);
 				for(var i = 0; i<tags_id_array.length; i++){
@@ -76,7 +76,7 @@ exports.article_create = function(req, res, next){
 					}
 				}
 				
-				
+				console.log(2);
 				res.render('article_edit', {error: '内容不能为空',　title: title, tags: tags});
 				return;
 			});
@@ -92,7 +92,8 @@ exports.article_create = function(req, res, next){
 			if(err) return next(err);
 			
 			var render = function(){
-				res.redirect('/');
+				res.redirect('/article_view/'+article._id);
+				return;
 			}
 			
 			var proxy = new EventProxy();
@@ -399,9 +400,10 @@ function get_article_by_query_once(query, cb){
 			if(err) return cb(err);
 			proxy.trigger('edit', edit);
 		});
-		var reply_where = {article_id: article._id};
+		var reply_where = {_id: article.last_reply_id};
 		replyCtrl.get_reply_by_query_once(reply_where, function(err, replies){
 			if(err) return cb(err);
+			
 			proxy.trigger('replies', replies);
 		});
 		

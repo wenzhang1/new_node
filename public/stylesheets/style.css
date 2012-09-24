@@ -15,7 +15,7 @@ body {
 	background: #EFEFEF;
 }
 
-.container .article_list,.container .side_bar {
+.container .main_left,.container .side_bar {
 	border: 1px solid #ccc;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -26,7 +26,7 @@ body {
 	margin-bottom: 20px;
 }
 
-.container .article_list {
+.container .main_left {
 	margin: 0;
 }
 
@@ -72,7 +72,7 @@ body {
 
 .article_list article header .author_box span {
 	margin-right: 22px;
-}
+}	
 
 .article_list article section p {
 	text-indent: 24px;
@@ -86,12 +86,12 @@ body {
 	margin-right: 10px;
 }
 
-.article_list article footer div.tag_include {
+div.tag_include {
 	margin-bottom: 10px;
 	text-align: right;
 }
 
-.article_list article footer div.tag_include a,.article_list article footer span b
+div.tag_include a,.article_list article footer span b
 	{
 	background: #C8CFE0;
 	padding: 0 5px;
@@ -102,7 +102,7 @@ body {
 	border-radius: 3px;
 }
 
-.article_list article footer div.tag_include a:hover {
+div.tag_include a:hover {
 	text-decoration: none;
 	background: #657ba9;
 	color: #fff;
@@ -112,7 +112,7 @@ body {
 	margin-right: 0;
 }
 
-.article_list .pagination {
+.pagination {
 	margin: 10px;
 }
 
@@ -149,12 +149,13 @@ body {
 	line-height: 80px;
 }
 
-#user .user_icon a {
+#user .user_icon a span{
 	display: inline-block;
 	overflow: hidden;
-	max-width: 180px;
+	max-width: 120px;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	vertical-align: bottom;
 }
 
 #user ul {
@@ -214,14 +215,6 @@ body {
 
 .side_list ul li span a {
 	color: #999;
-}
-
-.article_container {
-	margin-left: 0;
-	border: 1px solid #ccc;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
 }
 
 .article_container #article_content section {
@@ -310,4 +303,78 @@ body {
 	text-decoration: none;
 	background: #657ba9;
 	color: #fff;
+}
+.sign_container .sign_inner{
+	width:660px;
+	margin: 0 auto;
+	margin-top: 20px;
+}
+#user_container{
+	border-bottom: 1px solid #E3E8E3;
+}
+#user_container section{
+	padding: 10px 10px 0 10px;
+}
+#user_container section .user_icon a span{
+	display: inline-block;
+	overflow: hidden;
+	max-width: 120px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	vertical-align: bottom;
+}
+#user_container section ul{
+	margin: 12px 0 0 15px;
+}
+#user_container section ul li{
+	float: left;
+	color: #666;
+	margin: 0 2px;
+}
+#user_container section ul li b{
+	background: #C8CFE0;
+	border-radius: 3px;
+	color: #FFFFFF;
+	margin-left: 5px;
+	padding: 0px 5px;
+}
+#user_container footer{
+	padding: 5px 10px 10px 10px;
+	color: #666;
+}
+.user_articles article{
+	padding: 10px;
+	border-bottom: 1px solid #E3E8E3;
+	color: #666;
+}
+.user_articles article:hover{
+	background: #F5F5F5;
+}
+.user_articles article header h3{
+	font-size: 16px;
+	line-height: 18px;
+}
+.user_articles article footer span b{
+	background: #C8CFE0;
+	border-radius: 3px;
+	color: #FFFFFF;
+	margin-left: 5px;
+	padding: 0px 5px;
+}
+#new_replies{
+	margin-bottom: 10px;
+}
+.article_create_inner{
+	width:660px;
+	margin: 0 auto;
+	margin: 20px 0;
+}
+.article_create_inner .form-horizontal .control-label{
+	width: 100px;
+}
+.article_create_inner .form-horizontal .controls{
+	margin-left: 120px;
+}
+.article_create_inner .form-horizontal #submit_btn{
+	margin-right: 38px;
 }

@@ -13,6 +13,7 @@ var User = models.User;
 var EventProxy = require('eventproxy').EventProxy;
 var Util = require('../libs/utils');
 var articleCtrl = require('./article');
+var Reply = models.Reply;
 
 //add view
 exports.add_html = function(req, res, next){
@@ -52,24 +53,71 @@ exports.user_views = function(req, res, next){
 exports.user_view = function(req, res, next){
 	var user_name = req.params.uname;
 	
+	var render = function(user, new_articles, new_replies){
+		res.render('user_view',{
+			user: user,
+			new_articles: new_articles,
+			new_replies: new_replies
+		});
+	}
+	
+	var proxy = new EventProxy();
+	proxy.assign('user', 'new_articles', 'new_replies', render);
 	get_user_by_query_once({user_name: user_name}, function(err, user){
 		if(err) return next(err);
 		
 		user.create_at = Util.format_date(user.create_time);
-		res.render('user_view', {
-			user: user,
+		proxy.trigger('user', user);
+		
+		articleCtrl.get_articles_by_query({author_id: user._id},{limit: 5, sort: [ ['create_time', 'desc'] ]}, function(err, articles){
+			if(err) return next(err);
+			proxy.trigger('new_articles', articles);
+		});
+		
+		Reply.find({author_id: user._id}, [], {limit: 5, sort: [ ['reply_at', 'desc'] ]}, function(err, replies){
+			if(err) return next(err);
+			
+			var article_ids = [];
+			for(var i = 0; i < replies.length; i++){
+				article_ids.push(replies[i].article_id);
+			}
+			var where = {_id: {'$in': article_ids}};
+			articleCtrl.get_articles_by_query(where, {}, function(err, articles){
+				if(err) return next(err);
+				
+				proxy.trigger('new_replies', articles);
+			});
 		});
 	});
 }
 
 //add user action
 exports.add_action = function(req, res, next){
-    var user_name = sanitize(req.body.username).trim();
+    var user_name = sanitize(req.body.user_name).trim();
     user_name = sanitize(user_name).xss();
     var password = sanitize(req.body.password).trim();
     password = sanitize(password).xss();
     var email = sanitize(req.body.email).trim();
     email = sanitize(email).xss();
+    if(user_name == '' || email == '' || password == ''){
+    	res.render('user_add', {error: '信息不能为空', user_name: user_name, email: email});
+    	return;
+    }
+    //验证用户名
+    try{
+    	check(user_name, '用户名只能使用字母和数字').isAlphanumeric();
+    }catch(e){
+    	res.render('user_add',{error: e.message, user_name: user_name, email: email});
+    	return;
+    }
+    //验证电子邮箱
+    try{
+    	check(email, '不正确的电子邮箱').isEmail();
+    }catch(e){
+    	res.render('user_add',{error: e.message, user_name: user_name, email: email});
+    	return;
+    }
+    
     User.find({'$or':[{'user_name': user_name},{'email': email}]}, function(err, userRow){
 		if(err){
 		    return next(err);
@@ -80,21 +128,29 @@ exports.add_action = function(req, res, next){
 		}
 		
 		password = md5(password);
-		var UserData = {
-		    user_name: user_name,
-		    password: password,
-		    email: email,
-		    create_time: Date.now()
-		}
-	
-		new User(UserData).save(function(err, User, count){
-		    if(err){
-			return next(err);
-		    }
-	
-		   res.redirect('/user_views');
-		})
-    })
+		user = new User();
+		user.user_name = user_name;
+		user.password = password;
+		user.email = email;
+		user.create_time = Date.now();
+		
+		user.save(function(err){
+			if(err) return next(err);
+			
+			User.findOne({'user_name': user_name}, function(err, userRow){
+				if(err) return next(err);
+				
+				if(userRow){
+					gen_session(userRow, res, req);
+					
+					res.redirect('/');
+				}else{
+					res.render('login',{error: '没有此用户，或已被删除'});
+	    			return;
+				}
+			});
+		});
+    });
 
 }
 
