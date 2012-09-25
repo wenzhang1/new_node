@@ -53,6 +53,7 @@ module.exports = function(app){
     app.post('/tag_edit/:tid', tag.tag_edit);
     app.get('/tag_del/:tid', tag.tag_del);
     app.get('/tag/:tid', tag.article_list);
+    app.get('/tags', tag.tags_list);
     
     //reply
     app.post('/:aid/reply', reply.reply_add);

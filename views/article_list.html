@@ -1,7 +1,10 @@
 <header>
 	<nav class="tag_list">
 		<ul class="nav nav-pills">
-		   <% if(locals.tags){ %>
+			<li>
+				<a href="/tags" title="编辑标签"><i class="icon-pencil"></i></a>
+			</li>
+		   	<% if(locals.tags){ %>
    			<% locals.tags.forEach(function(tag){ %>
    				<li>
    					<a href="/tag/<%= tag._id%>"><%= tag.name%></a>
@@ -15,7 +18,7 @@
 </header>
 <div class="main_left article_list span8">
 	<header class="clearfix create_btn">
-		<h2 class="pull-left">文章列表</h2>
+		<h2 class="pull-left"><i class="icon-list"></i>文章列表</h2>
 		<a class="pull-right" href="/article_create">
 			<button class="btn">
 				发表文章
@@ -25,7 +28,7 @@
 	<% articles.forEach(function(article){ %>
 	<article>
 		<header>
-			<h3><a href="/article_view/<%= article._id%>"><%= article.title %></a></h3>
+			<h3><i class="icon-book"></i><a href="/article_view/<%= article._id%>"><%= article.title %></a></h3>
 			<div class="author_box">
 				<span> 发表者： <a href="/user_view/<%=article.author.user_name %>" target="_blank"><%=article.author.user_name %></a> </span>
 				<span class="time_box">发表于：
@@ -40,6 +43,7 @@
 		</section>
 		<footer>
 			<div class="tag_include">
+				<i class="icon-tags"></i>
 				<% if(article.tags && article.tags.length>0){ %>
 					<% article.tags.forEach(function(tag){ %>
 						<a href="/tag/<%= tag._id%>" target="_blank"><%= tag.name%></a>
@@ -48,8 +52,8 @@
 					<a>暂无标签</a>
 				<% } %>
 			</div>
-			<span>点击数：<b><%= article.view_count %></b></span>
-			<span>评论：<b><%= article.reply_count%></b></span>
+			<span><i class="icon-eye-open"></i>点击数：<b><%= article.view_count %></b></span>
+			<span><i class="icon-comment"></i>评论：<b><%= article.reply_count%></b></span>
 			<% if(article.reply_count > 0){ %>
 			<span class="last_reply_time pull-right"> 最后回复于： <a href="" target="_blank"><%= article.reply.author.user_name%></a>
 				<time pubdate datetime="<%= article.last_reply_time%>">

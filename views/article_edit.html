@@ -1,16 +1,19 @@
 <header>
    <nav class="tag_list">
       <ul class="nav nav-pills">
-          <% if(locals.tags){ %>
-            <% locals.tags.forEach(function(tag){ %>
-               <li>
-                  <a href="/tag/<%= tag._id%>"><%= tag.name%></a>
-               </li>
-            <% }) %>
-         <% }else{ %>
-            <a>暂无标签</a>
-         <% } %>
-      </ul>
+			<li>
+				<a href="/tags" title="编辑标签"><i class="icon-pencil"></i></a>
+			</li>
+		   	<% if(locals.tags){ %>
+   			<% locals.tags.forEach(function(tag){ %>
+   				<li>
+   					<a href="/tag/<%= tag._id%>"><%= tag.name%></a>
+   				</li>
+   			<% }) %>
+			<% }else{ %>
+			   暂无标签
+			<% } %>
+		</ul>
    </nav>
 </header>
 <div class="main_left span8">

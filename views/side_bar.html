@@ -32,7 +32,7 @@
 	</aside>
 	<aside class="side_list">
 		<h2>热门文章</h2>
-		<ul class="unstyled">
+		<ol>
 			<% if(locals.hot_articles){ %>
 				<% locals.hot_articles.forEach(function(hot_article){ %>
 				<li>
@@ -45,11 +45,11 @@
 				<a>暂无热门文章</a>
 			</li>
 			<% } %>
-		</ul>
+		</ol>
 	</aside>
 	<aside class="side_list">
 		<h2>最新回复的主题</h2>
-		<ul class="unstyled">
+		<ol>
 			<% if(locals.last_replies){ %>
 				<% locals.last_replies.forEach(function(reply){ %>
 				<li>
@@ -62,6 +62,6 @@
 				<a>暂无回复</a>
 			</li>
 			<% } %>
-		</ul>
+		</ol>
 	</aside>
 </div>

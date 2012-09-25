@@ -1,0 +1,57 @@
+<div class="main_left span8">
+	<header class="clearfix create_btn">
+		<h2 class="pull-left"><i class="icon-tags"></i>所有标签</h2>
+		<a class="pull-right" href="/article_create">
+			<button class="btn">
+				添加标签
+			</button>
+		</a>
+	</header>
+	<div class="tags_inner">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>
+						排序
+					</th>
+					<th>
+						标签名称
+					</th>
+					<th>
+						标签简介
+					</th>
+					<th>
+						编辑
+					</th>
+					<th>
+						删除
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% if(tags && tags.length > 0){ %>
+					<% tags.forEach(function(tag){ %>
+						<tr>
+							<td>
+								<%= tag.order%>
+							</td>
+							<td>
+								<%= tag.name%>
+							</td>
+							<td>
+								<%= tag.description%>
+							</td>
+							<td>
+								<a href="" title="编辑"><i class="icon-pencil"></i></a>
+							</td>
+							<td>
+								<a href="" title="删除"><i class="icon-trash"></i></a>
+							</td>
+						</tr>
+					<% }) %>
+				<% } %>
+			</tbody>
+		</table>
+	</div>
+</div>
+<%- partial('side_bar') %>

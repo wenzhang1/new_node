@@ -1,23 +1,26 @@
 <header>
    <nav class="tag_list">
       <ul class="nav nav-pills">
-          <% if(locals.tags){ %>
-            <% locals.tags.forEach(function(tag){ %>
-               <li>
-                  <a href="/tag/<%= tag._id%>"><%= tag.name%></a>
-               </li>
-            <% }) %>
-         <% }else{ %>
-            <a>暂无标签</a>
-         <% } %>
-      </ul>
+			<li>
+				<a href="/tags" title="编辑标签"><i class="icon-pencil"></i></a>
+			</li>
+		   	<% if(locals.tags){ %>
+   			<% locals.tags.forEach(function(tag){ %>
+   				<li>
+   					<a href="/tag/<%= tag._id%>"><%= tag.name%></a>
+   				</li>
+   			<% }) %>
+			<% }else{ %>
+			   暂无标签
+			<% } %>
+		</ul>
    </nav>
 </header>
 <% if(article){ %>
 <div class="main_left article_container span8">
    <article id="article_content">
       <header class="clearfix create_btn">
-         <h2 class="pull-left"><%= article.title%></h2>
+         <h2 class="pull-left"><i class="icon-book"></i><%= article.title%></h2>
          <a class="pull-right" href="">
          <button class="btn">
             发表回复
@@ -37,6 +40,7 @@
                </time> </span>
          </div>
          <div class="tag_include">
+         	<i class="icon-tags"></i>
             <% if(article.tags && article.tags.length>0){ %>
                <% article.tags.forEach(function(tag){ %>
                   <a href="" target="_blank"><%= tag.name %></a>
@@ -48,7 +52,7 @@
       </footer>
       <article id="reply_list">
          <header class="clearfix create_btn">
-            <h2 class="pull-left">评论列表</h2>
+            <h2 class="pull-left"><i class="icon-comment"></i>评论列表</h2>
          </header>
          <% if(article.replies.length>0){ %>
          <%- partial('reply/reply', article.replies) %>
@@ -58,7 +62,7 @@
      	</section>
          <% } %>
          <div class="add_reply create_btn">
-            <h2>发表评论：</h2>
+            <h2><i class="icon-comment"></i>发表评论：</h2>
             <form class="clearfix" action="/<%=article._id %>/reply" method="post">
                <input type="hidden" name="_csrf" value="<%= _csrf%>" />
                <textarea class="reply_textarea" name="reply_content" id="reply_content"></textarea>

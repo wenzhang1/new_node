@@ -40,7 +40,9 @@ body {
 	color: #999;
 	line-height: 18px;
 }
-
+.container .create_btn h2 i{
+	margin: 2px 2px 0 0;
+}
 .container .create_btn a {
 	margin: 4px 10px 0 0;
 }
@@ -63,7 +65,9 @@ body {
 	text-overflow: ellipsis;
 	width: 650px;
 }
-
+.article_list article header h3 i{
+	margin: 2px 2px 0 0;
+}
 .article_list article header .author_box {
 	line-height: 18px;
 	margin-bottom: 10px;
@@ -85,7 +89,9 @@ body {
 .article_list article footer span {
 	margin-right: 10px;
 }
-
+.article_list article footer span i{
+	margin: 0 2px 0 0;
+}
 div.tag_include {
 	margin-bottom: 10px;
 	text-align: right;
@@ -185,26 +191,27 @@ div.tag_include a:hover {
 	margin: 10px 0;
 }
 
-.side_list ul li {
+.side_list ol li {
 	padding: 3px 5px 0 0;
 }
 
-.side_list ul li:hover {
+.side_list ol li:hover {
 	background: #F3F3F3;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
 }
 
-.side_list ul li a.article_title {
-	width: 215px;
+.side_list ol li a.article_title {
+	width: 185px;
 	display: inline-block;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	vertical-align: middle;
 }
 
-.side_list ul li span {
+.side_list ol li span {
 	width: 60px;
 	display: inline-block;
 	white-space: nowrap;
@@ -213,7 +220,7 @@ div.tag_include a:hover {
 	text-align: right;
 }
 
-.side_list ul li span a {
+.side_list ol li span a {
 	color: #999;
 }
 
@@ -354,6 +361,12 @@ div.tag_include a:hover {
 	font-size: 16px;
 	line-height: 18px;
 }
+.user_articles article header h3 i{
+	margin: 2px 2px 0 0;
+}
+.user_articles article footer span i{
+	margin: 0 2px 0 0;
+}
 .user_articles article footer span b{
 	background: #C8CFE0;
 	border-radius: 3px;
@@ -377,4 +390,17 @@ div.tag_include a:hover {
 }
 .article_create_inner .form-horizontal #submit_btn{
 	margin-right: 38px;
+}
+
+.tags_inner{
+	width: 640px;
+	margin: 20px auto;
+}
+.tags_inner table th.center{
+	text-align: center;
+}
+.tags_inner table td{
+	max-width: 140px;
+	white-space: nowrap;
+	overflow: hidden;
 }

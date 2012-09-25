@@ -68,6 +68,22 @@ exports.article_list = function(req, res, next){
 		})
 	});
 }
+
+//标签列表
+exports.tags_list = function(req, res, next){
+	if(!req.session || !req.session.user || !req.session.user.is_admin){
+		res.render('error', {error: '对不起，你没有权限这么做'});
+		return;
+	}else{
+		get_all_tags(function(err, tags){
+			if(err) return next(err);
+			
+			res.render('tags', {tags: tags});
+			return;
+		});
+	}
+}
+
 //创建标签
 exports.tag_create = function(req, res, next){
 	if(!req.session || !req.session.user){

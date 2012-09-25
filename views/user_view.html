@@ -1,22 +1,25 @@
 <header>
    <nav class="tag_list">
       <ul class="nav nav-pills">
-          <% if(locals.tags){ %>
-            <% locals.tags.forEach(function(tag){ %>
-               <li>
-                  <a href="/tag/<%= tag._id%>"><%= tag.name%></a>
-               </li>
-            <% }) %>
-         <% }else{ %>
-            <a>暂无标签</a>
-         <% } %>
-      </ul>
+			<li>
+				<a href="/tags" title="编辑标签"><i class="icon-pencil"></i></a>
+			</li>
+		   	<% if(locals.tags){ %>
+   			<% locals.tags.forEach(function(tag){ %>
+   				<li>
+   					<a href="/tag/<%= tag._id%>"><%= tag.name%></a>
+   				</li>
+   			<% }) %>
+			<% }else{ %>
+			   暂无标签
+			<% } %>
+		</ul>
    </nav>
 </header>
 <div class="main_left span8">
 	<article id="user_container" class="clearfix">
 		<header class="create_btn">
-        	<h2><%=user.user_name %>的信息</h2>
+        	<h2><i class="icon-user"></i><%=user.user_name %>的信息</h2>
       	</header>
       	<section class="clearfix">
       		<div class="pull-left user_icon">
@@ -47,13 +50,13 @@
 	</article>
 	<article id="new_articles" class="user_articles">
 		<header class="create_btn">
-        	<h2><%=user.user_name %>最近发表的文章</h2>
+        	<h2><i class="icon-book"></i><%=user.user_name %>最近发表的文章</h2>
       	</header>
       	<% if(new_articles && new_articles.length>0){ %>
       		<% new_articles.forEach(function(new_article){%>
 		      	<article>
 					<header class="clearfix">
-						<h3><a href="/article_view/<%= new_article._id%>"><%= new_article.title %></a></h3>
+						<h3><i class="icon-book"></i><a href="/article_view/<%= new_article._id%>"><%= new_article.title %></a></h3>
 						<div class="author_box">
 							<span> 发表者： <a href="/user_view/<%=new_article.author.user_name %>" target="_blank"><%=new_article.author.user_name %></a> </span>
 							<span class="time_box pull-left">发表于：
@@ -62,6 +65,7 @@
 								</time>
 							</span>
 							<div class="tag_include pull-right">
+								<i class="icon-tags"></i>
 								<% if(new_article.tags && new_article.tags.length>0){ %>
 									<% new_article.tags.forEach(function(tag){ %>
 										<a href="/tag/<%= tag._id%>" target="_blank"><%= tag.name%></a>
@@ -73,8 +77,8 @@
 						</div>
 					</header>
 					<footer>
-						<span>点击数：<b><%= new_article.view_count %></b></span>
-						<span>评论：<b><%= new_article.reply_count%></b></span>
+						<span><i class="icon-eye-open"></i>点击数：<b><%= new_article.view_count %></b></span>
+						<span><i class="icon-comment"></i>评论：<b><%= new_article.reply_count%></b></span>
 						<% if(new_article.reply_count > 0){ %>
 						<span class="last_reply_time pull-right"> 最后回复于： <a href="" target="_blank"><%= new_article.reply.author.user_name%></a>
 							<time pubdate datetime="<%= new_article.last_reply_time%>">
@@ -93,13 +97,13 @@
 	</article>
 	<article id="new_replies" class="user_articles">
 		<header class="create_btn">
-        	<h2><%=user.user_name %>最近回复的文章</h2>
+        	<h2><i class="icon-comment"></i><%=user.user_name %>最近回复的文章</h2>
       	</header>
       	<% if(new_replies && new_replies.length > 0){ %>
       		<% new_replies.forEach(function(replies_article){ %>
       			<article>
 					<header class="clearfix">
-						<h3><a href="/article_view/<%= replies_article._id%>"><%= replies_article.title %></a></h3>
+						<h3><i class="icon-book"></i><a href="/article_view/<%= replies_article._id%>"><%= replies_article.title %></a></h3>
 						<div class="author_box">
 							<span> 发表者： <a href="/user_view/<%=replies_article.author.user_name %>" target="_blank"><%=replies_article.author.user_name %></a> </span>
 							<span class="time_box pull-left">发表于：
@@ -108,6 +112,7 @@
 								</time>
 							</span>
 							<div class="tag_include pull-right">
+								<i class="icon-tags"></i>
 								<% if(replies_article.tags && replies_article.tags.length>0){ %>
 									<% replies_article.tags.forEach(function(tag){ %>
 										<a href="/tag/<%= tag._id%>" target="_blank"><%= tag.name%></a>
@@ -119,8 +124,8 @@
 						</div>
 					</header>
 					<footer>
-						<span>点击数：<b><%= replies_article.view_count %></b></span>
-						<span>评论：<b><%= replies_article.reply_count%></b></span>
+						<span><i class="icon-eye-open"></i>点击数：<b><%= replies_article.view_count %></b></span>
+						<span><i class="icon-comment"></i>评论：<b><%= replies_article.reply_count%></b></span>
 						<% if(replies_article.reply_count > 0){ %>
 						<span class="last_reply_time pull-right"> 最后回复于： <a href="" target="_blank"><%= replies_article.reply.author.user_name%></a>
 							<time pubdate datetime="<%= replies_article.last_reply_time%>">
