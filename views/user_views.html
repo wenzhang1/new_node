@@ -34,7 +34,7 @@
 					<% users.forEach(function(user){ %>
 						<tr>
 							<td>
-								<p><%=user.user_name %></p>
+								<p><a href="/user_view/<%=user.user_name %>"><%=user.user_name %></a></p>
 							</td>
 							<td>
 								<p><%=user.email %></p>

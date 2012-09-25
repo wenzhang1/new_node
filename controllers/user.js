@@ -300,7 +300,13 @@ exports.change_password = function(req, res, next){
 				user.save(function(err){
 					if(err) return next(err);
 					
-				    res.redirect('/login_out');
+					if(req.session.user._id != user._id && req.session.user.is_admin){
+						res.redirect('/user_views');
+						return;
+					}else{
+					    res.redirect('/login_out');
+					    return;
+					}
 				})
 			}else{
 				res.render('change_password', {error: '对不起，您不能修改此用户的密码'});
