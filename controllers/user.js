@@ -14,6 +14,7 @@ var EventProxy = require('eventproxy').EventProxy;
 var Util = require('../libs/utils');
 var articleCtrl = require('./article');
 var Reply = models.Reply;
+var url = require('url');
 
 //add view
 exports.add_html = function(req, res, next){
@@ -22,32 +23,56 @@ exports.add_html = function(req, res, next){
 
 //user list view
 exports.user_views = function(req, res, next){
-    var render = function(users){
-    	res.render('user_views',{
-    		users: users
-    	});
+    if(!req.session.user || !req.session.user.is_admin){
+    	res.render('error', {error: '对不起,你没有权限这么做'});
+    	return;
+    }else{
+	    var limit = 10;
+	    var current_page = parseInt(req.query.page, 10) || 1;
+		var pathname = url.parse(req.url).pathname;
+
+	    var render = function(users, pages){
+	    	res.render('user_views',{
+	    		users: users,
+				current_page: current_page,
+				pages: pages,
+				base_url: pathname
+	    	});
+	    }
+	    var proxy = new EventProxy();
+	    var where = {};
+	    var opt = {skip: (current_page - 1) * limit, limit: limit, sort: [ ['create_time', 'asc'] ]};
+	    var once_where = {};
+		proxy.assign('users', 'pages', render);
+	    get_user_by_query(where, opt, function(err, users){
+	    	if(err) return next(err);
+	    	
+	    	var user_done = function(userRow){
+	    		proxy.trigger('users', userRow);
+	    	}
+	    	
+	    	proxy.after('usersRow', users.length, user_done);
+	    	for(var i = 0; i<users.length; i++){
+	    		(function(i){
+	    			once_where = {_id: users[i].edit_id};
+	    			get_user_by_query_once(once_where, function(err, edit){
+	    				if(err) return next(err);
+	    				users[i].edit = edit;
+	    				users[i].create_at = Util.format_date(users[i].create_time);
+	    				users[i].update_time = Util.format_date(users[i].update_at);
+	    				proxy.trigger('usersRow', users[i]);
+	    			});
+	    		})(i);
+	    	}
+	    });
+	    
+	    User.count(where, function(err, user_count){
+	    	if(err) return next(err);
+	    	
+	    	var pages = Math.ceil(user_count / limit);
+	    	proxy.trigger('pages', pages);
+	    });
     }
-    var proxy = new EventProxy();
-    var where = {};
-    var opt = {limit: 5};
-    var once_where = {};
-    get_user_by_query(where, opt, function(err, users){
-    	if(err) return next(err);
-    	
-    	proxy.after('users', users.length, render);
-    	for(var i = 0; i<users.length; i++){
-    		(function(i){
-    			once_where = {_id: users[i].edit_id};
-    			get_user_by_query_once(once_where, function(err, edit){
-    				if(err) return next(err);
-    				users[i].edit = edit;
-    				users[i].create_at = Util.format_date(users[i].create_time);
-    				users[i].update_time = Util.format_date(users[i].update_at);
-    				proxy.trigger('users', users[i]);
-    			});
-    		})(i);
-    	}
-    });
 };
 
 exports.user_view = function(req, res, next){
@@ -313,7 +338,7 @@ exports.del_user = function(req, res, next){
 		
 		var proxy = new EventProxy();
 		var render = function(){
-			res.render('error', {sucess: '已删除用户'});
+			res.redirect('/user_views');
 			return;
 		}
 		proxy.assign('user_remove', render);

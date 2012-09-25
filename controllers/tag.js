@@ -75,11 +75,32 @@ exports.tags_list = function(req, res, next){
 		res.render('error', {error: '对不起，你没有权限这么做'});
 		return;
 	}else{
-		get_all_tags(function(err, tags){
+		var limit = 10;
+	    var current_page = parseInt(req.query.page, 10) || 1;
+		var pathname = url.parse(req.url).pathname;
+		var render = function(tags, pages){
+	    	res.render('tags',{
+	    		tags: tags,
+				current_page: current_page,
+				pages: pages,
+				base_url: pathname
+	    	});
+	    }
+	    
+	    var proxy = new EventProxy();
+	    var opt = {skip: (current_page - 1) * limit, limit: limit, sort: [ ['create_at', 'asc'] ]};
+	    proxy.assign('tags', 'pages', render);
+		
+		Tag.find({}, [], opt, function(err,tags){
+			if(err) return cb(err, []);
+			proxy.trigger('tags', tags);
+		}); 
+		
+		Tag.count({}, function(err, tag_count){
 			if(err) return next(err);
 			
-			res.render('tags', {tags: tags});
-			return;
+			var pages = Math.ceil(tag_count / limit);
+			proxy.trigger('pages', pages);
 		});
 	}
 }
@@ -111,7 +132,7 @@ exports.tag_create = function(req, res, next){
 			var description = req.body.description;
 			
 			if(name == ''){
-				res.render('tag_edit', {error: '标题太少或太多'});
+				res.render('tag_edit', {error: '标签名称不能为空', order: order, description: description});
 				return;
 			}
 			
@@ -136,7 +157,7 @@ exports.tag_create = function(req, res, next){
 				tag.description = description;
 				tag.save(function(err){
 					if(err) return next(err);
-					res.redirect('/');
+					res.redirect('/tags');
 				});
 			});
 		}else{
@@ -215,7 +236,7 @@ exports.tag_edit = function(req, res, next){
 				tag.save(function(err){
 					if(err) return next(err);
 					
-					res.redirect('/');
+					res.redirect('/tags');
 				})
 			});
 		}else{
@@ -252,9 +273,9 @@ exports.tag_del = function(req, res, next){
 			tag.remove(function(err){
 				if(err) return next(err);
 			})
-			res.render('error', {sucess: '标签已删除'});
+			res.redirect('/tags');
 		}
-		proxy.assign('article_tag_removed', render);
+		proxy.assign('article_tag_removed', done);
 		
 		where = {tag_id: tag._id};
 		ArticleTag.remove(where, function(err){
