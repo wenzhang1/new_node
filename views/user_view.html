@@ -1,9 +1,13 @@
 <header>
    <nav class="tag_list">
       <ul class="nav nav-pills">
-			<li>
-				<a href="/tags" title="编辑标签"><i class="icon-pencil"></i></a>
-			</li>
+			<% if(locals.current_user){ %>
+				<% if(locals.current_user.is_admin){ %>
+					<li>
+						<a href="/tags" title="编辑标签"><i class="icon-pencil"></i></a>
+					</li>
+				<% } %>
+			<% } %>
 		   	<% if(locals.tags){ %>
    			<% locals.tags.forEach(function(tag){ %>
    				<li>
@@ -56,7 +60,17 @@
       		<% new_articles.forEach(function(new_article){%>
 		      	<article>
 					<header class="clearfix">
-						<h3><i class="icon-book"></i><a href="/article_view/<%= new_article._id%>"><%= new_article.title %></a></h3>
+						<h3>
+							<i class="icon-book"></i><a class="article_title" href="/article_view/<%= new_article._id%>"><%= new_article.title %></a>
+							<% if(locals.current_user){ %>
+								<% if(locals.current_user.is_admin || locals.current_user.user_name == new_article.author.user_name){ %>
+								<div class="pull-right article_opera">
+									<a href="/article_edit/<%= new_article._id%>" title="修改"><i class="icon-pencil"></i></a>
+									<a href="/article_del/<%= new_article._id%>" title="删除"><i class="icon-trash"></i></a>
+								</div>
+								<% } %>
+							<% } %>
+						</h3>
 						<div class="author_box">
 							<span> 发表者： <a href="/user_view/<%=new_article.author.user_name %>" target="_blank"><%=new_article.author.user_name %></a> </span>
 							<span class="time_box pull-left">发表于：
@@ -103,7 +117,18 @@
       		<% new_replies.forEach(function(replies_article){ %>
       			<article>
 					<header class="clearfix">
-						<h3><i class="icon-book"></i><a href="/article_view/<%= replies_article._id%>"><%= replies_article.title %></a></h3>
+						<h3>
+							<i class="icon-book"></i>
+							<a class="article_title" href="/article_view/<%= replies_article._id%>"><%= replies_article.title %></a>
+							<% if(locals.current_user){ %>
+								<% if(locals.current_user.is_admin || locals.current_user.user_name == replies_article.author.user_name){ %>
+								<div class="pull-right article_opera">
+									<a href="/article_edit/<%= replies_article._id%>" title="修改"><i class="icon-pencil"></i></a>
+									<a href="/article_del/<%= replies_article._id%>" title="删除"><i class="icon-trash"></i></a>
+								</div>
+								<% } %>
+							<% } %>
+						</h3>
 						<div class="author_box">
 							<span> 发表者： <a href="/user_view/<%=replies_article.author.user_name %>" target="_blank"><%=replies_article.author.user_name %></a> </span>
 							<span class="time_box pull-left">发表于：

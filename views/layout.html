@@ -20,7 +20,7 @@
 				<nav class="nav-collapse">
 					<ul class="nav">
 						<li class="divider-vertical"></li>
-						<li class="active">
+						<li>
 							<a href="/">首页</a>
 						</li>
 						<% if(locals.current_user){ %>
@@ -28,8 +28,13 @@
 							<a href="/user_view/<%= current_user.user_name %>"><%= current_user.user_name %></a>
 						</li>
 						<li>
-                     <a href="/change_password/<%= current_user._id %>">设置</a>
-                  </li>
+		                     <a href="/change_password/<%= current_user._id %>">设置</a>
+	                    </li>
+	                    <% if(locals.current_user.is_admin){ %>
+							<li>
+								<a href="/user_views">管理用户</a>
+							</li>
+						<% } %>
 						<li>
 							<a href="/login_out">注销</a>
 						</li>
@@ -44,8 +49,8 @@
 						<li class="divider-vertical"></li>
 					</ul>
 				</nav>
-				<form action="" class="navbar-search">
-					<input id="" name="" type="text" class="search-query span3" />
+				<form action="/search" class="navbar-search">
+					<input id="q" name="q" type="text" placeholder="搜索..." class="search-query span3" />
 				</form>
 			</div>
 		</div>

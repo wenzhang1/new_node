@@ -28,8 +28,11 @@ body {
 
 .container .main_left {
 	margin: 0;
+	overflow: hidden;
 }
-
+.container .main_left img{
+	max-width: 620px;
+}
 .container .create_btn {
 	border-bottom: 1px solid #E3E8E3;
 }
@@ -39,6 +42,14 @@ body {
 	font-size: 16px;
 	color: #999;
 	line-height: 18px;
+}
+.container .create_btn h2 span{
+	display: inline-block;
+	width: 500px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	vertical-align: middle;
 }
 .container .create_btn h2 i{
 	margin: 2px 2px 0 0;
@@ -60,10 +71,14 @@ body {
 	font-size: 18px;
 	line-height: 24px;
 	margin: 0px;
+}
+.article_list article header h3 a{
+	display: inline-block;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	width: 650px;
+	width: 540px;
+	vertical-align: top;
 }
 .article_list article header h3 i{
 	margin: 2px 2px 0 0;
@@ -224,6 +239,9 @@ div.tag_include a:hover {
 	color: #999;
 }
 
+.article_container #article_content .article_opera{
+	margin: 5px 10px 0 0;
+}
 .article_container #article_content section {
 	padding: 30px 10px 10px 10px;
 }
@@ -361,6 +379,13 @@ div.tag_include a:hover {
 	font-size: 16px;
 	line-height: 18px;
 }
+.user_articles article header h3 a.article_title{
+	display: inline-block;
+	width: 530px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	vertical-align: top;
+}
 .user_articles article header h3 i{
 	margin: 2px 2px 0 0;
 }
@@ -397,11 +422,21 @@ div.tag_include a:hover {
 	width: 640px;
 	margin: 20px auto;
 }
+.tags_inner table td p{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin: 0;
+}
 .tags_inner table th.center{
 	text-align: center;
 }
-.tags_inner table td{
+.tags_inner table td.tag_order{
+	max-width: 50px;
+}
+.tags_inner table td.tag_name{
+	max-width: 50px;
+}
+.tags_inner table td.description{
 	max-width: 140px;
-	white-space: nowrap;
-	overflow: hidden;
 }

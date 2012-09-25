@@ -1,9 +1,13 @@
 <header>
    <nav class="tag_list">
       <ul class="nav nav-pills">
-			<li>
-				<a href="/tags" title="编辑标签"><i class="icon-pencil"></i></a>
-			</li>
+			<% if(locals.current_user){ %>
+				<% if(locals.current_user.is_admin){ %>
+					<li>
+						<a href="/tags" title="编辑标签"><i class="icon-pencil"></i></a>
+					</li>
+				<% } %>
+			<% } %>
 		   	<% if(locals.tags){ %>
    			<% locals.tags.forEach(function(tag){ %>
    				<li>
@@ -20,12 +24,16 @@
 <div class="main_left article_container span8">
    <article id="article_content">
       <header class="clearfix create_btn">
-         <h2 class="pull-left"><i class="icon-book"></i><%= article.title%></h2>
-         <a class="pull-right" href="">
-         <button class="btn">
-            发表回复
-         </button></a>
+         <h2 class="pull-left"><i class="icon-book"></i><span><%= article.title%></span></h2>
       </header>
+	<% if(locals.current_user){ %>
+		<% if(locals.current_user.is_admin || locals.current_user.user_name == article.author.user_name){ %>
+			<div class="pull-right article_opera">
+				<a href="/article_edit/<%= article._id%>" title="修改"><i class="icon-pencil"></i></a>
+				<a href="/article_del/<%= article._id%>" title="删除"><i class="icon-trash"></i></a>
+			</div>
+		<% } %>
+	<% } %>
       <section>
          <p>
             <%- article.content%>

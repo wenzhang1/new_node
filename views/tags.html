@@ -1,7 +1,7 @@
 <div class="main_left span8">
 	<header class="clearfix create_btn">
 		<h2 class="pull-left"><i class="icon-tags"></i>所有标签</h2>
-		<a class="pull-right" href="/article_create">
+		<a class="pull-right" href="/tag_create">
 			<button class="btn">
 				添加标签
 			</button>
@@ -32,26 +32,45 @@
 				<% if(tags && tags.length > 0){ %>
 					<% tags.forEach(function(tag){ %>
 						<tr>
-							<td>
-								<%= tag.order%>
+							<td class="tag_order">
+								<p><%= tag.order%></p>
+							</td>
+							<td class="tag_name">
+								<p><%= tag.name%></p>
+							</td>
+							<td class="description">
+								<p><%= tag.description%></p>
 							</td>
 							<td>
-								<%= tag.name%>
+								<a href="/tag_edit/<%= tag._id%>" title="编辑"><i class="icon-pencil"></i></a>
 							</td>
 							<td>
-								<%= tag.description%>
-							</td>
-							<td>
-								<a href="" title="编辑"><i class="icon-pencil"></i></a>
-							</td>
-							<td>
-								<a href="" title="删除"><i class="icon-trash"></i></a>
+								<a href="/tag_del/<%= tag._id%>" title="删除" class="del_tag"><i class="icon-trash"></i></a>
 							</td>
 						</tr>
 					<% }) %>
 				<% } %>
 			</tbody>
 		</table>
+		<div class="pagination pull-right">
+			<% var pages_url = base_url + '?' + 'page='; %>
+			<%- partial('page_layout', {
+				pages: pages,
+				pages_url: pages_url,
+				current_page: current_page
+			}) %>
+		</div>
 	</div>
 </div>
+<script>
+//删除标签
+	 $(document).ready(function(){
+	 	$('.del_tag').click(function(){
+	 		if(confirm('确认要删除此标签吗？')){
+	 			window.location.href = $(this).attr('href');
+	 		}
+	 		return false;
+	 	});
+	 });
+</script>
 <%- partial('side_bar') %>

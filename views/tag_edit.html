@@ -1,27 +1,50 @@
-<% if(locals.error){ %>
-	<h2><%= error%></h2>
-<% }else{ %>
-	<% if(locals.action && locals.action == 'tag_edit'){ %>
-		<form action="/tag_edit/<%= tag_id%>" method="post">
-	<% }else{ %>
-		<form action="/tag_create" method="post">
-	<%}%>
-		<input type="hidden" name="_csrf" value="<%=_csrf%>" />
-		<% if(locals.name){ %>
-			<input type="text" name="name" value="<%= name%>" />
-		<% }else{ %>
-			<input type="text" name="name" value="" />
-		<% } %>
-		<% if(locals.order){ %>
-			<input type="text" name="order" value="<%= order%>" />
-		<% }else{ %>
-			<input type="text" name="order" value="" />
-		<% } %>
-		<textarea id="description" name="description" cols="30" rows="10"><% if(locals.description){ %><%= description%><% } %></textarea>
-		<% if(locals.action && locals.action == 'tag_edit'){ %>
-			<input type="submit" value="修改" />
-		<% }else{ %>
-			<input type="submit" value="添加" />
+<div class="main_left sign_container span8">
+	<header class="clearfix create_btn">
+		<h2><i class="icon-edit"></i><% if(locals.action && locals.action == 'tag_edit'){ %>编辑标签<% }else{ %>创建标签<% } %></h2>
+	</header>
+	<div class="sign_inner">
+		<%if(locals.error){%>
+		<div class="alert alert-error">
+			<a class="close" data-dismiss="alert" href="#">x</a>
+			<%= error %>
+		</div>
 		<%}%>
-	</form>
-<% } %>
+		<% if(locals.action && locals.action == 'tag_edit'){ %>
+		<form class="form-horizontal" action="/tag_edit/<%= tag_id%>" method="post">
+		<% }else{ %>
+		<form class="form-horizontal" action="/tag_create" method="post">
+		<% } %>
+		    <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+		    <div class="control-group">
+			    <label for="name" class="control-label">标签名：</label>
+			    <div class="controls">
+			    	<% if(locals.name){ %>
+						<input class="input-xlarge" type="text" id="name" name="name" value="<%= name%>" />
+					<% }else{ %>
+						<input class="input-xlarge" type="text" id="name" placeholder="标签名..." name="name" value="" />
+					<% } %>
+			    </div>
+		    </div>
+		    <div class="control-group">
+		    	<label for="order" class="control-label">排序：</label>
+			    <div class="controls">
+			    	<% if(locals.name){ %>
+						<input class="input-xlarge" type="text" id="order" name="order" value="<%= name%>" />
+					<% }else{ %>
+						<input class="input-xlarge" type="text" id="order" placeholder="排序..." name="order" value="" />
+					<% } %>
+			    </div>
+		    </div>
+		    <div class="control-group">
+		    	<label for="description" class="control-label">标签描述：</label>
+			    <div class="controls">
+			    	<textarea id="description" class="input-xlarge" name="description" rows="3"><% if(locals.description){ %><%= description%><% } %></textarea>
+			    </div>
+		    </div>
+		    <div class="form-actions">
+		    	 <input class="btn" type="submit" value="保存" />
+		    </div>
+		</form>
+	</div>
+</div>
+<%- partial('side_bar') %>

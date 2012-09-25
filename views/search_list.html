@@ -29,6 +29,7 @@
 			</button>
 		</a>
 	</header>
+	<% if(locals.articles && locals.articles.length > 0){ %>
 	<% articles.forEach(function(article){ %>
 	<article>
 		<header>
@@ -77,13 +78,20 @@
 	</article>
 	<% }) %>
 	<div class="pagination pull-right">
-		<% var pages_url = base_url + '?' + 'page='; %>
+		<% var pages_url = base_url + '?q=' + keyword + '&page='; %>
 		<%- partial('page_layout', {
 			pages: pages,
 			pages_url: pages_url,
 			current_page: current_page
 		}) %>
 	</div>
+	<% }else{ %>
+	<article>
+		<div class="alert alert-error">
+			对不起，没有搜索到您需要的内容
+		</div>
+	</article>
+	<% } %>
 </div>
 
 <%- partial('side_bar') %>

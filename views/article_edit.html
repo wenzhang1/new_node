@@ -1,9 +1,13 @@
 <header>
    <nav class="tag_list">
       <ul class="nav nav-pills">
-			<li>
-				<a href="/tags" title="编辑标签"><i class="icon-pencil"></i></a>
-			</li>
+			<% if(locals.current_user){ %>
+				<% if(locals.current_user.is_admin){ %>
+					<li>
+						<a href="/tags" title="编辑标签"><i class="icon-pencil"></i></a>
+					</li>
+				<% } %>
+			<% } %>
 		   	<% if(locals.tags){ %>
    			<% locals.tags.forEach(function(tag){ %>
    				<li>
@@ -18,7 +22,7 @@
 </header>
 <div class="main_left span8">
 	<header class="create_btn">
-		<h2><% if(locals.action && locals.action == 'article_edit'){ %>修改文章<% }else{ %>发表文章<% } %></h2>
+		<h2><i class="icon-edit"></i><% if(locals.action && locals.action == 'article_edit'){ %>修改文章<% }else{ %>发表文章<% } %></h2>
 	</header>
 	<div class="article_create_inner clearfix">
 		<% if(locals.error){ %>
