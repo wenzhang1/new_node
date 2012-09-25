@@ -224,10 +224,10 @@ exports.change_password = function(req, res, next){
 			}
 			
 			if(user._id == req.session.user._id || req.session.user.is_admin){
-				res.render('change_password', {action: 'change_password', user_id: user._id});
+				res.render('change_password', {action: 'change_password', user: user});
 				return;
 			}else{
-				res.render('error', {error: '对不起，你没有权限修改此用户'});
+				res.render('change_password', {error: '对不起，你没有权限修改此用户'});
 				return;
 			}
 		})
@@ -252,7 +252,7 @@ exports.change_password = function(req, res, next){
 				old_password = sanitize(old_password).xss();
 				old_password = md5(old_password);
 				if(old_password != user.password){
-					res.render('error', {error: '旧密码输入错误！'});
+					res.render('change_password', {error: '旧密码输入错误！', action: 'change_password', user: user});
 					return;
 				}
 				
@@ -261,11 +261,12 @@ exports.change_password = function(req, res, next){
 				var re_password = sanitize(req.body.re_password).trim();
 				re_password = sanitize(re_password).xss();
 				if(new_password == '' || re_password == ''){
-					res.render('error', {error: '新密码输入有误'});
+					res.render('change_password', {error: '新密码不能为空', action: 'change_password', user: user});
 					return;
 				}
 				if(new_password != re_password){
-					res.render('error', {error: '两次密码输入不同'});
+					res.render('change_password', {error: '两次密码输入不同', action: 'change_password', user: user});
+					return;
 				}
 				
 				user.password = md5(new_password);
@@ -277,7 +278,7 @@ exports.change_password = function(req, res, next){
 				    res.redirect('/login_out');
 				})
 			}else{
-				res.render('error', {error: '对不起，您不能修改此用户的密码'});
+				res.render('change_password', {error: '对不起，您不能修改此用户的密码'});
 				return;
 			}
 		})

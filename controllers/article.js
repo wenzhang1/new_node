@@ -28,6 +28,7 @@ exports.article_create = function(req, res, next){
     		res.render('article_edit', {
     			tags: tags,
     		});
+    		return;
     	}
     	
     	var proxy = new EventProxy();
@@ -39,7 +40,7 @@ exports.article_create = function(req, res, next){
     	});
     }
     
-	if(method == 'post'){
+    if(method == 'post'){
     	var title = sanitize(req.body.title).trim();
     	title = sanitize(title).xss();
     	var tags_ids = sanitize(req.body.tags_ids).trim();
@@ -60,12 +61,10 @@ exports.article_create = function(req, res, next){
 					}
 				}
 				
-				console.log(content);
 				res.render('article_edit', {error: '标题不能为空', content: content, tags: tags});
 				return;
 			});
-		}
-		if(content == '' || content == '<br />' || content == '<br/>'){
+		}else if(content == '' || content == '<br />' || content == '<br/>'){
 			tagCtrl.get_all_tags(function(err, tags){
 				if(err) return next(err);
 				for(var i = 0; i<tags_id_array.length; i++){
@@ -76,61 +75,59 @@ exports.article_create = function(req, res, next){
 					}
 				}
 				
-				console.log(2);
 				res.render('article_edit', {error: '内容不能为空',　title: title, tags: tags});
 				return;
 			});
-		}
-		
-		article = new Article();
-		article.content = content;
-		article.title = title;
-		article.create_time = Date.now();
-		article.author_id = req.session.user._id;
-		
-		article.save(function(err){
-			if(err) return next(err);
+		}else{
+			article = new Article();
+			article.content = content;
+			article.title = title;
+			article.create_time = Date.now();
+			article.author_id = req.session.user._id;
 			
-			var render = function(){
-				res.redirect('/article_view/'+article._id);
-				return;
-			}
-			
-			var proxy = new EventProxy();
-			proxy.assign('articles_tag_saved', render);
-			if(tags_id_array.length == 0){
-				proxy.trigger('articles_tag_saved');
-			}
-			
-			var article_tag_save_done = function(){
-				proxy.trigger('articles_tag_saved');
-			}
-			
-			userCtrl.get_user_by_query_once({_id: article.author_id}, function(err, user){
-				user.article_count += 1;
-				user.save();
-				req.session.user._id.article_count += 1;
+			article.save(function(err){
+				if(err) return next(err);
+				
+				var render = function(){
+					res.redirect('/article_view/'+article._id);
+				}
+				
+				var proxy = new EventProxy();
+				proxy.assign('articles_tag_saved', render);
+				if(tags_id_array.length == 0){
+					proxy.trigger('articles_tag_saved');
+				}
+				
+				var article_tag_save_done = function(){
+					proxy.trigger('articles_tag_saved');
+				}
+				
+				userCtrl.get_user_by_query_once({_id: article.author_id}, function(err, user){
+					user.article_count += 1;
+					user.save();
+					req.session.user._id.article_count += 1;
+				});
+				proxy.after('article_tag_saved', tags_id_array.length, article_tag_save_done);
+				
+				for(var i = 0; i<tags_id_array.length; i++){
+					(function(i){
+						var article_tag = new ArticleTag();
+						article_tag.article_id = article._id;
+						article_tag.tag_id = tags_id_array[i];
+						article_tag.save(function(err){
+							if(err) return next(err);
+							
+							proxy.trigger('article_tag_saved');
+						});
+						tagCtrl.get_tag_by_query_once({_id: tags_id_array[i]},function(err,tag){
+			              if(err) return next(err);
+			              tag.artcile_count += 1;
+			              tag.save();
+			            });
+					})(i);
+				}
 			});
-			proxy.after('article_tag_saved', tags_id_array.length, article_tag_save_done);
-			
-			for(var i = 0; i<tags_id_array.length; i++){
-				(function(i){
-					var article_tag = new ArticleTag();
-					article_tag.article_id = article._id;
-					article_tag.tag_id = tags_id_array[i];
-					article_tag.save(function(err){
-						if(err) return next(err);
-						
-						proxy.trigger('article_tag_saved');
-					});
-					tagCtrl.get_tag_by_query_once({_id: tags_id_array[i]},function(err,tag){
-		              if(err) return next(err);
-		              tag.artcile_count += 1;
-		              tag.save();
-		            });
-				})(i);
-			}
-		});
+		}
     }
 };
 
