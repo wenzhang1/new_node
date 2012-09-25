@@ -138,7 +138,7 @@ exports.reply_del = function(req, res, next){
 		
 		var proxy = new EventProxy();
 		var done = function(){
-			res.render('error', {sucess: '评论已删除'});
+			res.render('error', {success: '评论已删除'});
 			return;
 		}
 		proxy.assign('reply_removed', done);

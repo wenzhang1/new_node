@@ -354,7 +354,7 @@ exports.article_del = function(req, res, next){
 		
 		var proxy = new EventProxy();
 		var render = function(){
-			res.render('error', {sucess: '信息已删除'});
+			res.render('error', {success: '信息已删除'});
 			return;
 		}
 		proxy.assign('article_remove', render);

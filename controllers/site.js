@@ -36,7 +36,7 @@ exports.index = function(req, res, next){
 		
 		proxy.trigger('articles', articles);
 	});
-	articleCtrl.get_article_counts({}, function(err, article_count){
+	articleCtrl.get_article_counts(where, function(err, article_count){
 		if(err) return next(err);
 		
 		var pages = Math.ceil(article_count / limit);

@@ -11,6 +11,7 @@ var user = require('../controllers/user');
 var upload = require('../controllers/upload');
 var tag = require('../controllers/tag');
 var reply = require('../controllers/reply');
+var search = require('../controllers/search');
 
 module.exports = function(app){
     //index
@@ -59,4 +60,7 @@ module.exports = function(app){
     app.post('/:aid/reply', reply.reply_add);
     app.post('/:aid/reply_2', reply.reply2_add);
     app.get('/reply_del/:rid', reply.reply_del);
+    
+    //search
+    app.get('/search', search.search_list);
 }
