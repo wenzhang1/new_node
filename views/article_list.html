@@ -33,7 +33,7 @@
 	<% articles.forEach(function(article){ %>
 	<article>
 		<header>
-			<h3><i class="icon-book"></i><a href="/article_view/<%= article._id%>"><%= article.title %></a></h3>
+			<h3><i class="icon-book"></i><span><a href="/article_view/<%= article._id%>"><%= article.title %></a></span></h3>
 			<div class="author_box">
 				<span> 发表者： <a href="/user_view/<%=article.author.user_name %>" target="_blank"><%=article.author.user_name %></a> </span>
 				<span class="time_box">发表于：

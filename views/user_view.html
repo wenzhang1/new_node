@@ -61,7 +61,7 @@
 		      	<article>
 					<header class="clearfix">
 						<h3>
-							<i class="icon-book"></i><a class="article_title" href="/article_view/<%= new_article._id%>"><%= new_article.title %></a>
+							<i class="icon-book"></i><span><a href="/article_view/<%= new_article._id%>"><%= new_article.title %></a></span>
 							<% if(locals.current_user){ %>
 								<% if(locals.current_user.is_admin || locals.current_user.user_name == new_article.author.user_name){ %>
 								<div class="pull-right article_opera">
@@ -119,7 +119,7 @@
 					<header class="clearfix">
 						<h3>
 							<i class="icon-book"></i>
-							<a class="article_title" href="/article_view/<%= replies_article._id%>"><%= replies_article.title %></a>
+							<span><a href="/article_view/<%= replies_article._id%>"><%= replies_article.title %></a></span>
 							<% if(locals.current_user){ %>
 								<% if(locals.current_user.is_admin || locals.current_user.user_name == replies_article.author.user_name){ %>
 								<div class="pull-right article_opera">

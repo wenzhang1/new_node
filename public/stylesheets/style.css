@@ -72,7 +72,7 @@ body {
 	line-height: 24px;
 	margin: 0px;
 }
-.article_list article header h3 a{
+.article_list article header h3 span{
 	display: inline-block;
 	white-space: nowrap;
 	overflow: hidden;
@@ -217,15 +217,21 @@ div.tag_include a:hover {
 	border-radius: 3px;
 }
 
-.side_list ol li a.article_title {
+.side_list ol li span.article_title {
 	width: 185px;
 	display: inline-block;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	vertical-align: middle;
+	text-align:left;
 }
-
+.side_list ol li span.article_title a{
+	color: #0088CC;
+}
+.side_list ol li span.article_title a:hover{
+	color: #005580;
+}
 .side_list ol li span {
 	width: 60px;
 	display: inline-block;
@@ -379,7 +385,7 @@ div.tag_include a:hover {
 	font-size: 16px;
 	line-height: 18px;
 }
-.user_articles article header h3 a.article_title{
+.user_articles article header h3 span{
 	display: inline-block;
 	width: 530px;
 	overflow: hidden;

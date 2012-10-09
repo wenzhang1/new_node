@@ -36,7 +36,7 @@
 			<% if(locals.hot_articles){ %>
 				<% locals.hot_articles.forEach(function(hot_article){ %>
 				<li>
-					<a class="article_title" href="/article_view/<%= hot_article._id %>"><%= hot_article.title%></a>
+					<span class="article_title"><a href="/article_view/<%= hot_article._id %>"><%= hot_article.title%></a></span>
 					<span class="pull-right"><a href="/user_view/<%=hot_article.author.user_name %>"><%= hot_article.author.user_name%></a></span>
 				</li>
 				<% }) %>
@@ -53,7 +53,7 @@
 			<% if(locals.last_replies){ %>
 				<% locals.last_replies.forEach(function(reply){ %>
 				<li>
-					<a class="article_title" href="/article_view/<%= reply._id%>"><%= reply.title%></a>
+					<span class="article_title"><a href="/article_view/<%= reply._id%>"><%= reply.title%></a></span>
 					<span class="pull-right"><a href="/user_view/<%= reply.author.user_name%>"><%= reply.author.user_name%></a></span>
 				</li>
 				<% }) %>
