@@ -83,7 +83,8 @@ app.configure('production', function(){
 // Routes
 routes(app);
 
-var port = config.port;
-app.listen(port, function(){
+var port = (process.env.VMC_APP_PORT || 80);
+var host = (process.env.VCAP_APP_HOST || 'localhost');
+app.listen(port, host, function(){
   console.log("Express server listening on port %d in %s mode", port, app.settings.env);
 });
