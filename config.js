@@ -10,6 +10,7 @@ exports.config = {
     webname : 'New Node',
     port : 3000,
     upload_dir : path.join(__dirname, 'public', 'upload', 'imgaes'),
+
     
     session_secret: 'newnode',
     auth_cookie_name: 'newnode',
